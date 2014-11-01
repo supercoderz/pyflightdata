@@ -12,17 +12,17 @@ def get_entry_details(entry,by_tail=False):
 	details = {}
 	cols = entry.find_all('td')
 	if cols.__len__() > 1:
-		details['date'] = cols[0].text
-		details['from'] = cols[1].text
-		details['to'] = cols[2].text
+		details['date'] = cols[0].text.encode('unicode-escape')
+		details['from'] = cols[1].text.encode('unicode-escape')
+		details['to'] = cols[2].text.encode('unicode-escape')
 		if by_tail :
-			details['flight'] = cols[3].text
+			details['flight'] = cols[3].text.encode('unicode-escape')
 		else:
-			details['aircraft'] = cols[3].text
-		details['std'] = cols[4].text
-		details['atd'] = cols[5].text
-		details['sta'] = cols[6].text
-		details['status'] = cols[7].text
+			details['aircraft'] = cols[3].text.encode('unicode-escape')
+		details['std'] = cols[4].text.encode('unicode-escape')
+		details['atd'] = cols[5].text.encode('unicode-escape')
+		details['sta'] = cols[6].text.encode('unicode-escape')
+		details['status'] = cols[7].text.encode('unicode-escape')
 	return details
 
 def merge(attrs,details):
