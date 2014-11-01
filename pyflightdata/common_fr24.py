@@ -15,7 +15,7 @@ def get_entry_details(entry,by_tail=False):
 		details['date'] = cols[0].text
 		details['from'] = cols[1].text
 		details['to'] = cols[2].text
-		if tail :
+		if by_tail :
 			details['flight'] = cols[3].text
 		else:
 			details['aircraft'] = cols[3].text
