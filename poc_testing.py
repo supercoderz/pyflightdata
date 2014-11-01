@@ -1,4 +1,4 @@
-# coding: utf-8
+# This is how we prove that this aproach works
 import requests
 result = requests.get('http://www.flightradar24.com/data/flights/ac16/')
 result.status_code
