@@ -1,4 +1,4 @@
-from .common import REG_BASE, FLT_BASE, AIRPORT_BASE, get_data, get_countries_data, get_airports_data
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, get_data, get_countries_data, get_airports_data
 
 #most of these are resundant from common.py
 #doing it this way so that we can tweak for different sites later
