@@ -9,7 +9,6 @@ soup.find(id='tblFlightData')
 soup.find(id='tblFlightData').tr
 soup.find(id='tblFlightData').tr
 soup.find(id='tblFlightData').find_all('tr')
-soup.find(id='tblFlightData').find_all('tr').size()
 soup.find(id='tblFlightData').find_all('tr').__len__()
 soup.find(id='tblFlightData').find_all('tr')[4]
 type(soup.find(id='tblFlightData').find_all('tr')[4])
@@ -35,6 +34,4 @@ dir(e.find_all('td')[1])
 (e.find_all('td')[1]).attrs
 (e.find_all('td')[1]).text
 (e.find_all('td')[1])
-(e.find_all('td')
-)
-get_ipython().magic(u'save testing 1-38')
+(e.find_all('td'))

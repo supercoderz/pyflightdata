@@ -12,8 +12,8 @@ class TestGetByFlightNumber(object):
 class TestGetByTailNumber(object):
 	
 	def test_simple_get(self):
-		get_by_flight_number('VT-ALL')
+		get_by_tail_number('VT-ALL')
 		
 	def test_check_there_is_data(self):
-		result = get_by_flight_number('VT-ALL')
+		result = get_by_tail_number('VT-ALL')
 		assert result.__len__()>0
