@@ -94,7 +94,9 @@ def get_raw_airport_data(url):
 def process_raw_airport_data(data):
 	result = []
 	for entry in data:
-		result.append(entry.find('div').text.strip())
+		name = entry.find('div').text.strip()
+		code = entry.find('div').find('a').attrs['href'].split('/')[-1]
+		result.append((name,code))
 	return result
 
 def get_airports_data(url):
