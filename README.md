@@ -15,6 +15,12 @@ The API does not provide any mass request mechanism and does not recommend such 
 Eventually we will add more sites and more information to the API.
 
 
+IPython notebook example
+========================
+
+http://nbviewer.ipython.org/github/supercoderz/pyflightdata/blob/master/pyflightdata_example.ipynb
+
+
 Installation and Usage
 ======================
 
