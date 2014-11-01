@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 REG_BASE = 'http://www.flightradar24.com/data/airplanes/'
 FLT_BASE = 'http://www.flightradar24.com/data/flights/'
+AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
 
 def get_page_or_none(url):
 	result = requests.get(url)
@@ -17,22 +18,27 @@ def get_soup_or_none(content):
 		return soup
 	except:
 		return None
-		
-def get_raw_flight_data(url):
+
+def get_raw_data(url,item,element):
 	content = get_page_or_none(url)
 	if content:
 		soup = get_soup_or_none(content)
 		if soup:
 			try:
 				#ignore the header
-				return soup.find(id='tblFlightData').find_all('tr')[1:]
+				return soup.find(id=item).find_all(element)
 			except:
 				return []
 		else:
 			return []
 	else:
 		return []
-		
+
+
+#Handle all the flights data		
+def get_raw_flight_data(url):
+	return get_raw_data(url,'tblFlightData','tr')[1:]
+
 def get_entry_details(entry):
 	details = {}
 	cols = entry.find_all('td')
@@ -65,3 +71,34 @@ def get_data(url):
 	data = get_raw_flight_data(url)
 	result = process_raw_flight_data(data)
 	return result
+
+#Handle getting countries	
+def get_raw_country_data():
+	return get_raw_data(AIRPORT_BASE,'countriesList','li')
+
+def process_raw_country_data(data):
+	result = []
+	for entry in data:
+		result.append(entry.attrs['data-name'].strip())
+	return result
+
+def get_countries_data():
+	data = get_raw_country_data()
+	result = process_raw_country_data(data)
+	return result
+	
+#Handle getting the airports in a country
+def get_raw_airport_data(url):
+	return get_raw_data(url,'airlineList','li')
+
+def process_raw_airport_data(data):
+	result = []
+	for entry in data:
+		result.append(entry.find('div').text.strip())
+	return result
+
+def get_airports_data(url):
+	data = get_raw_airport_data(url)
+	result = process_raw_airport_data(data)
+	return result
+	

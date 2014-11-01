@@ -42,3 +42,26 @@ class TestCommon(object):
 	def test_get_data(self):
 		url = REG_BASE+'vt-all'
 		assert get_data(url).__len__()>0
+
+	def test_get_raw_data(self):
+		url = FLT_BASE+'ai101'
+		assert get_raw_data(url,'tblFlightData','tr').__len__() > 0		
+
+	def test_get_raw_country_data(self):
+		assert get_raw_country_data().__len__() > 0		
+
+	def test_process_raw_country_data(self):
+		data = get_raw_country_data()
+		assert data.__len__() > 0
+		result = process_raw_country_data(data)
+		assert result.__len__() > 0
+
+	def test_get_raw_airport_data(self):
+		assert get_raw_airport_data(AIRPORT_BASE+'India').__len__() > 0		
+
+	def test_process_raw_airport_data(self):
+		data = get_raw_airport_data(AIRPORT_BASE+'India')
+		assert data.__len__() > 0
+		result = process_raw_airport_data(data)
+		assert result.__len__() > 0
+
