@@ -1,4 +1,4 @@
-from .common import *
+from .common_fr24 import *
 
 class TestCommon(object):
 	
