@@ -1,1 +1,1 @@
-from .flightdata import get_by_flight_number, get_by_tail_number, get_countries, get_airports
+from .flightdata import get_history_by_flight_number, get_history_by_tail_number, get_countries, get_airports, get_info_by_tail_number

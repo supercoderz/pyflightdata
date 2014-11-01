@@ -1,19 +1,7 @@
 from .common_fr24 import *
 
-class TestCommon(object):
+class TestCommonFR24(object):
 	
-	def test_get_page_or_none_1(self):
-		assert get_page_or_none('http://google.com/abcd') == None
-	
-	def test_get_page_or_none_2(self):
-		assert get_page_or_none('http://www.flightradar24.com/') is not None
-		
-	def test_get_soup_or_none_1(self):
-		assert get_soup_or_none(None) == None
-		
-	def test_get_soup_or_none_2(self):
-		assert get_soup_or_none('http://www.flightradar24.com/') is not None
-		
 	def test_get_raw_flight_data_1(self):
 		url = REG_BASE+'vt-all'
 		assert get_raw_flight_data(url).__len__() > 0
@@ -43,10 +31,6 @@ class TestCommon(object):
 		url = REG_BASE+'vt-all'
 		assert get_data(url).__len__()>0
 
-	def test_get_raw_data(self):
-		url = FLT_BASE+'ai101'
-		assert get_raw_data(url,'tblFlightData','tr').__len__() > 0		
-
 	def test_get_raw_country_data(self):
 		assert get_raw_country_data().__len__() > 0		
 
@@ -65,3 +49,41 @@ class TestCommon(object):
 		result = process_raw_airport_data(data)
 		assert result.__len__() > 0
 
+	def test_get_raw_aircraft_image_data(self):
+		assert get_raw_aircraft_image_data(REG_BASE+'VT-ALL').__len__() > 0		
+
+	def test_process_raw_aircraft_image_data(self):
+		data = get_raw_aircraft_image_data(REG_BASE+'VT-ALL')
+		assert data.__len__() > 0
+		result = process_raw_aircraft_image_data(data)
+		assert result.__len__() > 0
+
+	def test_get_raw_aircraft_image_data_dummy(self):
+		assert get_raw_aircraft_image_data(REG_BASE+'VT-A').__len__() == 0		
+
+	def test_process_raw_aircraft_image_data_dummy(self):
+		data = get_raw_aircraft_image_data(REG_BASE+'VT-A')
+		assert data.__len__() == 0
+		result = process_raw_aircraft_image_data(data)
+		assert result.__len__() == 0
+
+	def test_get_raw_aircraft_info_data(self):
+		assert get_raw_aircraft_info_data(REG_BASE+'VT-ALL').__len__() > 0		
+
+	def test_process_raw_aircraft_info_data(self):
+		data = get_raw_aircraft_info_data(REG_BASE+'VT-ALL')
+		assert data.__len__() > 0
+		result = process_raw_aircraft_info_data(data)
+		assert result.__len__() > 0
+
+	def test_get_raw_aircraft_info_data_dummy(self):
+		assert get_raw_aircraft_info_data(REG_BASE+'VT-A').__len__() == 0		
+
+	def test_process_raw_aircraft_info_data_dummy(self):
+		data = get_raw_aircraft_info_data(REG_BASE+'VT-A')
+		assert data.__len__() == 0
+		result = process_raw_aircraft_info_data(data)
+		assert result.__len__() == 0
+
+	def test_get_aircraft_data(self):
+		assert get_aircraft_data(REG_BASE+'VT-ALL').__len__() > 0		
