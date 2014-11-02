@@ -157,7 +157,7 @@ def get_raw_airline_fleet_data(url):
 def process_raw_airline_fleet_data(data):
 	result = []
 	for entry in data:
-		result.append(entry.text.encode('unicode-escape').replace('\\xa0',' '))
+		result.append(encode_and_get(entry.text))
 	return result
 
 def get_airline_fleet_data(url):
