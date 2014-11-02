@@ -1,5 +1,6 @@
 from .common import *
 
+ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://www.flightradar24.com/data/airplanes/'
 FLT_BASE = 'http://www.flightradar24.com/data/flights/'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
@@ -12,17 +13,17 @@ def get_entry_details(entry,by_tail=False):
 	details = {}
 	cols = entry.find_all('td')
 	if cols.__len__() > 1:
-		details['date'] = cols[0].text.encode('unicode-escape')
-		details['from'] = cols[1].text.encode('unicode-escape')
-		details['to'] = cols[2].text.encode('unicode-escape')
+		details['date'] = cols[0].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['from'] = cols[1].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['to'] = cols[2].text.encode('unicode-escape').replace('\\xa0',' ')
 		if by_tail :
-			details['flight'] = cols[3].text.encode('unicode-escape')
+			details['flight'] = cols[3].text.encode('unicode-escape').replace('\\xa0',' ')
 		else:
-			details['aircraft'] = cols[3].text.encode('unicode-escape')
-		details['std'] = cols[4].text.encode('unicode-escape')
-		details['atd'] = cols[5].text.encode('unicode-escape')
-		details['sta'] = cols[6].text.encode('unicode-escape')
-		details['status'] = cols[7].text.encode('unicode-escape')
+			details['aircraft'] = cols[3].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['std'] = cols[4].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['atd'] = cols[5].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['sta'] = cols[6].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['status'] = cols[7].text.encode('unicode-escape').replace('\\xa0',' ')
 	return details
 
 def merge(attrs,details):
@@ -116,4 +117,65 @@ def process_raw_aircraft_info_data(data):
 		result['Airline'] = elements[11].text
 	except:
 		pass
+	return result
+	
+#Handle getting all the airlines
+def get_raw_airlines_data(url):
+	return get_raw_data(url,'airlineList','li')
+
+def process_raw_airlines_data(data):
+	result = []
+	for entry in data:
+		item = {}
+		item['name'] = entry.attrs['data-name']
+		item['iata'] = entry.attrs['data-iata']
+		item['icao'] = entry.attrs['data-icao']
+		img_tag = entry.find('img')
+		if img_tag:
+			img_path = img_tag.attrs['src']
+			item['image'] = ROOT + img_path
+		else:
+			item['image'] = ''
+		key_tag = entry.find('a')
+		if key_tag:
+			key = key_tag.attrs['href'].split('/')[3]
+			item['key'] = key
+		else:
+			item['key'] = ''
+		result.append(item)
+	return result
+
+def get_airlines_data(url):
+	data = get_raw_airlines_data(url)
+	result = process_raw_airlines_data(data)
+	return result
+
+#Handle getting the fleet
+def get_raw_airline_fleet_data(url):
+	return get_raw_data(url,'listAircrafts','p')
+
+def process_raw_airline_fleet_data(data):
+	result = []
+	for entry in data:
+		result.append(entry.text.encode('unicode-escape').replace('\\xa0',' '))
+	return result
+
+def get_airline_fleet_data(url):
+	data = get_raw_airline_fleet_data(url)
+	result = process_raw_airline_fleet_data(data)
+	return result
+
+#Handle getting the all the flights
+def get_raw_airline_flight_data(url):
+	return get_raw_data(url,'listFlights','a')
+
+def process_raw_airline_flight_data(data):
+	result = []
+	for entry in data:
+		result.append(entry.text.encode('unicode-escape').replace('\\xa0',' '))
+	return result
+
+def get_airline_flight_data(url):
+	data = get_raw_airline_flight_data(url)
+	result = process_raw_airline_flight_data(data)
 	return result

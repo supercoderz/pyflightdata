@@ -87,3 +87,42 @@ class TestCommonFR24(object):
 
 	def test_get_aircraft_data(self):
 		assert get_aircraft_data(REG_BASE+'VT-ALL').__len__() > 0		
+
+	def test_get_countries_data(self):
+		assert get_countries_data().__len__() > 0		
+
+	def test_get_airlines_data(self):
+		assert get_airlines_data(REG_BASE).__len__() > 0		
+
+	def test_get_raw_airlines_data(self):
+		assert get_raw_airlines_data(REG_BASE).__len__() > 0		
+
+	def test_process_raw_airlines_data(self):
+		data = get_raw_airlines_data(REG_BASE)
+		assert data.__len__() > 0
+		result = process_raw_airlines_data(data)
+		assert result.__len__() > 0
+
+	def test_get_airline_fleet_data(self):
+		assert get_airline_fleet_data('air-india-aic').__len__() > 0		
+
+	def test_get_raw_airline_fleet_data(self):
+		assert get_raw_airline_fleet_data('air-india-aic').__len__() > 0		
+
+	def test_process_raw_airline_fleet_data(self):
+		data = get_raw_airline_fleet_data('air-india-aic')
+		assert data.__len__() > 0
+		result = process_raw_airline_fleet_data(data)
+		assert result.__len__() > 0
+
+	def test_get_airline_flight_data(self):
+		assert get_airline_flight_data('air-india-aic').__len__() > 0		
+
+	def test_get_raw_airline_flight_data(self):
+		assert get_raw_airline_flight_data('air-india-aic').__len__() > 0		
+
+	def test_process_raw_airline_flight_data(self):
+		data = get_raw_airline_flight_data('air-india-aic')
+		assert data.__len__() > 0
+		result = process_raw_airline_flight_data(data)
+		assert result.__len__() > 0
