@@ -104,25 +104,25 @@ class TestCommonFR24(object):
 		assert result.__len__() > 0
 
 	def test_get_airline_fleet_data(self):
-		assert get_airline_fleet_data('air-india-aic').__len__() > 0		
+		assert get_airline_fleet_data(REG_BASE+'lufthansa-dlh').__len__() > 0		
 
 	def test_get_raw_airline_fleet_data(self):
-		assert get_raw_airline_fleet_data('air-india-aic').__len__() > 0		
+		assert get_raw_airline_fleet_data(REG_BASE+'lufthansa-dlh').__len__() > 0		
 
 	def test_process_raw_airline_fleet_data(self):
-		data = get_raw_airline_fleet_data('air-india-aic')
+		data = get_raw_airline_fleet_data(REG_BASE+'lufthansa-dlh')
 		assert data.__len__() > 0
 		result = process_raw_airline_fleet_data(data)
 		assert result.__len__() > 0
 
 	def test_get_airline_flight_data(self):
-		assert get_airline_flight_data('air-india-aic').__len__() > 0		
+		assert get_airline_flight_data(FLT_BASE+'air-india-aic').__len__() > 0		
 
 	def test_get_raw_airline_flight_data(self):
-		assert get_raw_airline_flight_data('air-india-aic').__len__() > 0		
+		assert get_raw_airline_flight_data(FLT_BASE+'air-india-aic').__len__() > 0		
 
 	def test_process_raw_airline_flight_data(self):
-		data = get_raw_airline_flight_data('air-india-aic')
+		data = get_raw_airline_flight_data(FLT_BASE+'air-india-aic')
 		assert data.__len__() > 0
 		result = process_raw_airline_flight_data(data)
 		assert result.__len__() > 0

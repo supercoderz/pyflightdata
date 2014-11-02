@@ -51,3 +51,13 @@ To get flight history, you can use tail number or flight number. Both will retur
 or
 
     get_history_by_tail_number('VT-ALL')
+	
+There are methods that you can use to get the list of all the airlines, their fleet list and list of all flight numbers
+
+    get_airlines()
+	
+This returns a list of dicts. Each airline dict has a field called 'key' which can be used to get the fleet and flight numbers
+
+    get_fleet('air-india-aic')
+	
+    get_flights('air-india-aic')
