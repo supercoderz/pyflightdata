@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import sys
 
 def get_page_or_none(url):
 	try:
@@ -32,3 +33,9 @@ def get_raw_data(url,item,element):
 			return []
 	else:
 		return []
+
+def encode_and_get(string):
+	if sys.version < '3':
+		return string.encode('unicode-escape').replace('\\xa0',' ')
+	else:
+		return string.encode('unicode-escape').replace(b'\\xa0',b' ')

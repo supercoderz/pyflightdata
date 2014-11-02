@@ -13,17 +13,17 @@ def get_entry_details(entry,by_tail=False):
 	details = {}
 	cols = entry.find_all('td')
 	if cols.__len__() > 1:
-		details['date'] = cols[0].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['from'] = cols[1].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['to'] = cols[2].text.encode('unicode-escape').replace('\\xa0',' ')
+		details['date'] = encode_and_get(cols[0].text)
+		details['from'] = encode_and_get(cols[1].text)
+		details['to'] = encode_and_get(cols[2].text)
 		if by_tail :
-			details['flight'] = cols[3].text.encode('unicode-escape').replace('\\xa0',' ')
+			details['flight'] = encode_and_get(cols[3].text)
 		else:
-			details['aircraft'] = cols[3].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['std'] = cols[4].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['atd'] = cols[5].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['sta'] = cols[6].text.encode('unicode-escape').replace('\\xa0',' ')
-		details['status'] = cols[7].text.encode('unicode-escape').replace('\\xa0',' ')
+			details['aircraft'] = encode_and_get(cols[3].text)
+		details['std'] = encode_and_get(cols[4].text)
+		details['atd'] = encode_and_get(cols[5].text)
+		details['sta'] = encode_and_get(cols[6].text)
+		details['status'] = encode_and_get(cols[7].text)
 	return details
 
 def merge(attrs,details):
@@ -172,7 +172,7 @@ def get_raw_airline_flight_data(url):
 def process_raw_airline_flight_data(data):
 	result = []
 	for entry in data:
-		result.append(entry.text.encode('unicode-escape').replace('\\xa0',' '))
+		result.append(encode_and_get(entry.text))
 	return result
 
 def get_airline_flight_data(url):
