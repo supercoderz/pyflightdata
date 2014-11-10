@@ -14,8 +14,16 @@ def get_entry_details(entry,by_tail=False):
 	cols = entry.find_all('td')
 	if cols.__len__() > 1:
 		details['date'] = encode_and_get(cols[0].text)
-		details['from'] = encode_and_get(cols[1].text)
-		details['to'] = encode_and_get(cols[2].text)
+		start = cols[1].text
+		from_airport_code = start[-4:-1]
+		from_airport = start[:-5]
+		details['from'] = encode_and_get(from_airport).strip()
+		details['from_code'] = encode_and_get(from_airport_code).strip()
+		end = cols[2].text
+		end_airport_code = end[-4:-1]
+		end_airport = end[:-5]
+		details['to'] = encode_and_get(end_airport).strip()
+		details['to_code'] = encode_and_get(end_airport_code).strip()
 		if by_tail :
 			details['flight'] = encode_and_get(cols[3].text)
 		else:
