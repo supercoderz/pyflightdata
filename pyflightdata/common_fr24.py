@@ -1,57 +1,20 @@
 from .common import *
 
 ROOT = 'http://www.flightradar24.com'
-REG_BASE = 'https://www.flightradar24.com/data/airplanes/'
-FLT_BASE = 'http://www.flightradar24.com/data/flights/'
+REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100'
+FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
 
 # Handle all the flights data
 
 
 def get_raw_flight_data(url):
-    return get_raw_data(url, 'tblFlightData', 'tr')[1:]
-
-
-def get_entry_details(entry, by_tail=False):
-    details = {}
-    cols = entry.find_all('td')
-    if cols.__len__() > 1:
-        details['date'] = encode_and_get(cols[0].text)
-        start = cols[1].text
-        from_airport_code = start[-4:-1]
-        from_airport = start[:-5]
-        details['from'] = encode_and_get(from_airport).strip()
-        details['from_code'] = encode_and_get(from_airport_code).strip()
-        end = cols[2].text
-        end_airport_code = end[-4:-1]
-        end_airport = end[:-5]
-        details['to'] = encode_and_get(end_airport).strip()
-        details['to_code'] = encode_and_get(end_airport_code).strip()
-        if by_tail:
-            details['flight'] = encode_and_get(cols[3].text)
-        else:
-            details['aircraft'] = encode_and_get(cols[3].text)
-        details['std'] = encode_and_get(cols[4].text)
-        details['atd'] = encode_and_get(cols[5].text)
-        details['sta'] = encode_and_get(cols[6].text)
-        details['status'] = encode_and_get(cols[7].text)
-    return details
-
-
-def merge(attrs, details):
-    attrs.update(details)
-    return attrs
-
+    data = get_raw_data_json(url, 'result.response.data')
+    return data[0] if data else []
 
 def process_raw_flight_data(data, by_tail=False):
-    result = []
-    for entry in data:
-        attrs = entry.attrs
-        data = get_entry_details(entry, by_tail)
-        d = merge(attrs, data)
-        if d.__len__() > 0:
-            result.append(d)
-    return result
+    #for now just return same
+    return data
 
 
 def get_data(url, by_tail=False):
@@ -63,13 +26,24 @@ def get_data(url, by_tail=False):
 
 
 def get_raw_country_data():
-    return get_raw_data(AIRPORT_BASE, 'countriesList', 'li')
+    return get_raw_data(AIRPORT_BASE, 'tbl-datatable', 'tbody','tr')
 
 
 def process_raw_country_data(data):
     result = []
     for entry in data:
-        result.append(entry.attrs['data-name'].strip())
+        cells = entry.find_all('td')
+        if cells:
+            for cell in cells:
+                link = cell.find('a')
+                if link:
+                    if 'data-country' in link.attrs:
+                        record={}
+                        for attr in link.attrs:
+                            if attr not in ['href','class','onclick']:
+                                attr_new = attr.replace('data-','')
+                                record[attr_new] = link[attr]
+                        result.append(record)
     return result
 
 
@@ -82,15 +56,23 @@ def get_countries_data():
 
 
 def get_raw_airport_data(url):
-    return get_raw_data(url, 'airlineList', 'li')
+    return get_raw_data(url, 'tbl-datatable', 'tbody','tr')
 
 
 def process_raw_airport_data(data):
     result = []
     for entry in data:
-        name = entry.find('div').text.strip()
-        code = entry.find('div').find('a').attrs['href'].split('/')[-1]
-        result.append((name, code))
+        cells = entry.find_all('td')
+        if cells:
+            for cell in cells:
+                link = cell.find('a')
+                if link:
+                    record = {}
+                    for attr in link.attrs:
+                        if attr not in ['href','class','onclick']:
+                            attr_new = attr.replace('data-','')
+                            record[attr_new] = link[attr]
+                    result.append(record)
     return result
 
 
@@ -114,7 +96,7 @@ def get_raw_aircraft_image_data(url):
 
 
 def get_raw_aircraft_info_data(url):
-    return get_raw_data(url, 'cntAircraftData', 'dl')
+    return get_raw_data_json(url, 'cntAircraftData', 'dl')
 
 
 def process_raw_aircraft_image_data(data):

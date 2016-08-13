@@ -6,12 +6,12 @@ from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data
 
 
 def get_history_by_flight_number(flight_number):
-    url = FLT_BASE + flight_number
+    url = FLT_BASE.format(flight_number)
     return get_data(url)
 
 
 def get_history_by_tail_number(tail_number):
-    url = REG_BASE + tail_number
+    url = REG_BASE.format(tail_number)
     return get_data(url, True)
 
 
@@ -20,12 +20,12 @@ def get_countries():
 
 
 def get_airports(country):
-    url = AIRPORT_BASE + country
+    url = AIRPORT_BASE.format(country)
     return get_airports_data(url)
 
 
 def get_info_by_tail_number(tail_number):
-    url = REG_BASE + tail_number
+    url = REG_BASE.format(tail_number)
     return get_aircraft_data(url)
 
 
@@ -35,10 +35,10 @@ def get_airlines():
 
 
 def get_fleet(airline_key):
-    url = REG_BASE + airline_key
+    url = REG_BASE.format(airline_key)
     return get_airline_fleet_data(url)
 
 
 def get_flights(airline_key):
-    url = FLT_BASE + airline_key
+    url = FLT_BASE.format(airline_key)
     return get_airline_flight_data(url)
