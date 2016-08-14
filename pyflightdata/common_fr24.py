@@ -152,24 +152,36 @@ def get_raw_airlines_data(url):
 def process_raw_airlines_data(data):
     result = []
     for entry in data:
+        record = {}
         cells = entry.find_all('td')
         if cells:
             for cell in cells:
                 link = cell.find('a')
                 if link:
                     if 'data-country' in link.attrs:
-                        record = {}
                         for attr in link.attrs:
-                            if attr not in ['href','class','onclick','target']:
+                            if attr not in ['href','class','onclick','target','data-country']:
                                 attr_new = attr.replace('data-','')
                                 record[attr_new] = link[attr]
+                        href = link['href']
+                        if href:
+                            code = href.split('/')[-1:]
+                            record['airline-code'] = code[0]
                         span = link.find('span')
                         if span:
                             images = span.find_all('img')
                             if images:
                                 for image in images:
                                     record['img'] = image['bn-lazy-src']
-                        result.append(record)
+                if 'class' in cell.attrs:
+                    if 'text-right' in cell['class']:
+                        value = encode_and_get(cell.text.strip())
+                        if 'aircraft' in value:
+                            record['fleet-size'] = value
+                        else:
+                            record['callsign'] = value
+        if len(record)>0:
+            result.append(record)
     return result
 
 
