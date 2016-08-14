@@ -13,12 +13,7 @@ def get_page_or_none(url):
         result = requests.get(url,headers=headers)
     except:
         return None
-    if result.status_code == 200:
-        return result.content
-    else:
-        print result.status_code
-        return None
-
+    return result.content if result.status_code == 200 else None
 
 def get_soup_or_none(content):
     try:
@@ -28,27 +23,33 @@ def get_soup_or_none(content):
         return None
 
 
-def traverse(soup,item,elements):
-    res = soup.find(id=item)
+def traverse(soup,key,elements,by_class=False):
+    res = soup.find(id=key) if not by_class else soup.find(class_=key)
     if elements:
         for element in elements[:-1]:
             res = res.find(element)
         return res.find_all(elements[-1])
     return res
 
-def get_raw_data(url, item, *elements):
+def get_raw_data(url, elemid, *elements):
     content = get_page_or_none(url)
     if content:
         soup = get_soup_or_none(content)
         if soup:
             try:
-                return traverse(soup,item,elements)
+                return traverse(soup,elemid,elements)
             except:
-                return []
-        else:
-            return []
-    else:
-        return []
+                pass
+
+def get_raw_data_class(url, klass, *elements):
+    content = get_page_or_none(url)
+    if content:
+        soup = get_soup_or_none(content)
+        if soup:
+            try:
+                return traverse(soup,klass,elements,True)
+            except:
+                pass
 
 def get_raw_data_json(url, path):
     content = get_page_or_none(url)
@@ -56,12 +57,9 @@ def get_raw_data_json(url, path):
         try:
             content_json = json.loads(content)
             expr = parse(path)
-            res = [match.value for match in expr.find(content_json)]
-            return res
+            return [match.value for match in expr.find(content_json)]
         except:
-            return []
-    else:
-        return []
+            pass
 
 
 def encode_and_get(string):

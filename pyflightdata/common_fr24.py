@@ -4,14 +4,17 @@ ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100'
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
-AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft'
+AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/'
+AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
 
 # Handle all the flights data
 
 
 def get_raw_flight_data(url):
     data = get_raw_data_json(url, 'result.response.data')
-    return data[0] if data else []
+    if data:
+        return data[0] or []
+    return []
 
 def process_raw_flight_data(data, by_tail=False):
     #TODO fix later
@@ -27,7 +30,7 @@ def get_data(url, by_tail=False):
 
 
 def get_raw_country_data():
-    return get_raw_data(AIRPORT_BASE, 'tbl-datatable', 'tbody','tr')
+    return get_raw_data(AIRPORT_BASE, 'tbl-datatable', 'tbody','tr') or []
 
 
 def process_raw_country_data(data):
@@ -62,7 +65,7 @@ def get_countries_data():
 
 
 def get_raw_airport_data(url):
-    return get_raw_data(url, 'tbl-datatable', 'tbody','tr')
+    return get_raw_data(url, 'tbl-datatable', 'tbody','tr') or []
 
 
 def process_raw_airport_data(data):
@@ -98,11 +101,11 @@ def get_aircraft_data(url):
 
 
 def get_raw_aircraft_image_data(url):
-    return get_raw_data(url, 'cntAircraftData', 'img')
+    return get_raw_data(url, 'cntAircraftData', 'img') or []
 
 
 def get_raw_aircraft_info_data(url):
-    return get_raw_data_json(url, 'cntAircraftData', 'dl')
+    return get_raw_data(url, 'cntAircraftData', 'dl') or []
 
 
 def process_raw_aircraft_image_data(data):
@@ -137,7 +140,7 @@ def process_raw_aircraft_info_data(data):
 
 
 def get_raw_airlines_data(url):
-    return get_raw_data(url, 'tbl-datatable', 'tbody', 'tr')
+    return get_raw_data(url, 'tbl-datatable', 'tbody', 'tr') or []
 
 
 def process_raw_airlines_data(data):
@@ -173,13 +176,35 @@ def get_airlines_data(url):
 
 
 def get_raw_airline_fleet_data(url):
-    return get_raw_data(url, 'listAircrafts', 'p')
-
+    slide =  get_raw_data_class(url, 'horizontal-slide')
+    return slide.find_all('li',class_='parent') if slide else []
 
 def process_raw_airline_fleet_data(data):
     result = []
-    for entry in data:
-        result.append(encode_and_get(entry.text))
+    for parent in data:
+        record = {}
+        div = parent.find('div')
+        if div:
+            #yeah this sucks
+            div = div.find('div')
+            if div:
+                atype = encode_and_get(div.text.strip())
+                atype = atype[0:atype.index('\\t')]
+                record['aircraft-type'] = atype
+                span = div.find('span')
+                if span:
+                    record['count']=encode_and_get(span.text.strip())
+        ul = parent.find('ul')
+        if ul:
+            regs = ul.find_all('li')
+            if regs:
+                reg_list = []
+                for reg in regs:
+                    link = reg.find('a')
+                    if link:
+                        reg_list.append(encode_and_get(link.text.strip()))
+                record['aircraft-regs'] = reg_list
+        result.append(record)
     return result
 
 
@@ -190,15 +215,25 @@ def get_airline_fleet_data(url):
 
 # Handle getting the all the flights
 
-
 def get_raw_airline_flight_data(url):
-    data = get_raw_data_json(url, 'result.response.data')
-    return data[0] if data else []
+    return get_raw_data(url, 'tbl-datatable', 'tbody','tr') or []
 
 
 def process_raw_airline_flight_data(data):
-    #TODO fix later
-    return data
+    result = []
+    for entry in data:
+        cells = entry.find_all('td')
+        if cells:
+            record = {}
+            record['flight'] = encode_and_get(cells[1].text)
+            record['from'] = cells[2]['title']
+            record['to'] = cells[3]['title']
+            record['aircraft-type'] = encode_and_get(cells[4].text)
+            link = cells[5].find('a')
+            if link:
+                record['aircraft'] = encode_and_get(link.text)
+            result.append(record)
+    return result
 
 
 def get_airline_flight_data(url):

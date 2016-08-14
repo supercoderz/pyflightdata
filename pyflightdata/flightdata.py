@@ -1,4 +1,4 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, get_data, get_countries_data
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE,get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
 
 # most of these are resundant from common.py
@@ -35,10 +35,10 @@ def get_airlines():
 
 
 def get_fleet(airline_key):
-    url = REG_BASE.format(airline_key)
+    url = AIRLINE_BASE+airline_key
     return get_airline_fleet_data(url)
 
 
 def get_flights(airline_key):
-    url = FLT_BASE.format(airline_key)
+    url = AIRLINE_FLT_BASE.format(airline_key)
     return get_airline_flight_data(url)
