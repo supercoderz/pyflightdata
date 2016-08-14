@@ -25,17 +25,17 @@ def get_airports(country):
 
 
 def get_info_by_tail_number(tail_number):
-    url = REG_BASE.format(tail_number)
+    url = AIRLINE_BASE.format(tail_number)
     return get_aircraft_data(url)
 
 
 def get_airlines():
-    url = AIRLINE_BASE
+    url = AIRLINE_BASE.format('')
     return get_airlines_data(url)
 
 
 def get_fleet(airline_key):
-    url = AIRLINE_BASE+airline_key
+    url = AIRLINE_BASE.format(airline_key)
     return get_airline_fleet_data(url)
 
 

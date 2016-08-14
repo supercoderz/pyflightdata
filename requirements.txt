@@ -3,3 +3,4 @@ lxml
 beautifulsoup4
 pytest
 pytest-cov
+pytest-repeat

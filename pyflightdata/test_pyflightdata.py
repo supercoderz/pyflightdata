@@ -7,7 +7,7 @@ class TestGetByFlightNumber(object):
         get_history_by_flight_number('AI101')
 
     def test_check_there_is_history_data(self):
-        result = get_history_by_flight_number('AI101')
+        result = get_history_by_flight_number('MI474')
         assert result.__len__() > 0
 
 
@@ -17,7 +17,7 @@ class TestGetByTailNumber(object):
         get_history_by_tail_number('VT-ALL')
 
     def test_check_there_is_history_data(self):
-        result = get_history_by_tail_number('VT-ALL')
+        result = get_history_by_tail_number('9V-SMC')
         assert result.__len__() > 0
 
     def test_aircraft_info(self):

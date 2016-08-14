@@ -3,9 +3,10 @@ from .common import *
 ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100'
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100'
-AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
-AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/'
+AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
+AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/{0}'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
+IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
 
 # Handle all the flights data
 
@@ -17,7 +18,7 @@ def get_raw_flight_data(url):
     return []
 
 def process_raw_flight_data(data, by_tail=False):
-    #TODO fix later
+    #TODO check later if we need to parse this data - for now return full set
     return data
 
 
@@ -30,7 +31,7 @@ def get_data(url, by_tail=False):
 
 
 def get_raw_country_data():
-    return get_raw_data(AIRPORT_BASE, 'tbl-datatable', 'tbody','tr') or []
+    return get_raw_data(AIRPORT_BASE.format(''), 'tbl-datatable', 'tbody','tr') or []
 
 
 def process_raw_country_data(data):
@@ -45,7 +46,7 @@ def process_raw_country_data(data):
                     if 'data-country' in link.attrs:
                         record={}
                         for attr in link.attrs:
-                            if attr not in ['href','class','onclick']:
+                            if attr not in ['href','class','onclick','title']:
                                 attr_new = attr.replace('data-','')
                                 record[attr_new] = link[attr]
                         images = link.find_all('img')
@@ -76,12 +77,15 @@ def process_raw_airport_data(data):
             for cell in cells:
                 link = cell.find('a')
                 if link:
-                    record = {}
-                    for attr in link.attrs:
-                        if attr not in ['href','class','onclick']:
-                            attr_new = attr.replace('data-','')
-                            record[attr_new] = link[attr]
-                    result.append(record)
+                    if 'data-iata' in link.attrs:
+                        record={}
+                        for attr in link.attrs:
+                            if attr not in ['href','class','onclick']:
+                                attr_new = attr.replace('data-','')
+                                if attr_new == 'title':
+                                    attr_new = 'name'
+                                record[attr_new] = link[attr]
+                        result.append(record)
     return result
 
 
@@ -93,47 +97,49 @@ def get_airports_data(url):
 
 # handle aircraft information
 def get_aircraft_data(url):
-    img_data = get_raw_aircraft_image_data(url)
-    result = process_raw_aircraft_image_data(img_data)
     info_data = get_raw_aircraft_info_data(url)
-    result.update(process_raw_aircraft_info_data(info_data))
+    result = process_raw_aircraft_info_data(info_data)
     return result
 
 
-def get_raw_aircraft_image_data(url):
-    return get_raw_data(url, 'cntAircraftData', 'img') or []
+def get_raw_aircraft_image_data(key):
+    return get_raw_data_json(IMAGE_BASE.format(key), 'thumbnails') or []
 
 
 def get_raw_aircraft_info_data(url):
-    return get_raw_data(url, 'cntAircraftData', 'dl') or []
+    return get_raw_data_class_all(url, 'row h-30 p-l-20 p-t-5') or []
 
 
 def process_raw_aircraft_image_data(data):
-    result = {}
-    try:
-        image_urls = []
-        for image in data:
-            url = image.attrs['src']
-            image_urls.append(url)
-        if image_urls.__len__() > 0:
-            result['images'] = image_urls
-    except:
-        pass
+    result = []
+    for item in data:
+        values = item.values()
+        for entry in values:
+            result.append(entry['src'])
     return result
 
 
 def process_raw_aircraft_info_data(data):
-    result = {}
-    try:
-        elements = data[0].findAll()
-        result['ModeS'] = elements[1].text
-        result['Registration'] = elements[3].text
-        result['Type code'] = elements[5].text
-        result['Type'] = elements[7].text
-        result['S/N'] = elements[9].text
-        result['Airline'] = elements[11].text
-    except:
-        pass
+    result = []
+    record = {}
+    for item in data:
+        label = item.find('label')
+        if label:
+            key = encode_and_get(label.text.strip().lower())
+            if '\\' in key:
+                key = key[0:key.index('\\')]
+            key = key.replace(' (msn)','')
+            key = key.replace(' ','-')
+            span = item.find('span')
+            if span:
+                value = encode_and_get(span.text.strip().lower())
+                record[key] = value
+    if 'mode-s' in record.keys():
+        img_data = get_raw_aircraft_image_data(record['mode-s'])
+        images = process_raw_aircraft_image_data(img_data)
+        record['images'] = images
+    if len(record)>0:
+        result.append(record)
     return result
 
 # Handle getting all the airlines

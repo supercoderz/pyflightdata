@@ -13,9 +13,7 @@ class TestCommonFR24(object):
 
     def test_get_raw_flight_data_3(self):
         url = REG_BASE.format('ai101')
-        # this is to account for how the site responds at the moment; might change later
-        # this sgives the sorry we dont know the flight error
-        assert get_raw_flight_data(url).__len__() == 2
+        assert get_raw_flight_data(url).__len__() == 0
 
     def test_get_raw_flight_data_4(self):
         url = FLT_BASE.format('ai101')
