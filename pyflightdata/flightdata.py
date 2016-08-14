@@ -1,4 +1,4 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, get_data, get_countries_data
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
 
 # most of these are resundant from common.py
@@ -30,7 +30,7 @@ def get_info_by_tail_number(tail_number):
 
 
 def get_airlines():
-    url = REG_BASE
+    url = AIRLINE_BASE
     return get_airlines_data(url)
 
 

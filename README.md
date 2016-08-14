@@ -8,9 +8,11 @@ pyflightdata
 
 
 A simple library to get flight data from flightradar24 from within Python code.
-This is not an offical API and does not use any undocumented API from flightradar24.
-This code simply automates what you would do from a browser and extracts the flight history by aircraft registration or by the flight number.
-We depend on the structure of the pages, so if the pages change, then this API will need to be updated.
+
+Please note that this is not an offical API and does not use any undocumented API from flightradar24.
+This code simply automates what you would do from a browser and extracts the flight history by aircraft registration or by the flight number. 
+
+We depend on the structure of the pages, so if the pages change, then this API will need to be updated. There is no defined plan to look out for these changes and keep the API updated. So do not use this in mission critical applications.
 
 The idea is to use this in cases where you want to exatract flight information for analysis, in a reasonable manner without bombarding the site with lot of requests and without having to manually do the recording of data by hand. Or when you have an application were you would like to give the user the ability to search from flight information and see within the app
 

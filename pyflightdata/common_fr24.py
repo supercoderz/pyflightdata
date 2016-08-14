@@ -4,6 +4,7 @@ ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100'
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/'
+AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft'
 
 # Handle all the flights data
 
@@ -13,7 +14,7 @@ def get_raw_flight_data(url):
     return data[0] if data else []
 
 def process_raw_flight_data(data, by_tail=False):
-    #for now just return same
+    #TODO fix later
     return data
 
 
@@ -34,7 +35,8 @@ def process_raw_country_data(data):
     for entry in data:
         cells = entry.find_all('td')
         if cells:
-            for cell in cells:
+            #this will break one day
+            for cell in cells[1:2]:
                 link = cell.find('a')
                 if link:
                     if 'data-country' in link.attrs:
@@ -43,6 +45,10 @@ def process_raw_country_data(data):
                             if attr not in ['href','class','onclick']:
                                 attr_new = attr.replace('data-','')
                                 record[attr_new] = link[attr]
+                        images = link.find_all('img')
+                        if images:
+                            for image in images:
+                                record['img'] = image['bn-lazy-src']
                         result.append(record)
     return result
 
@@ -131,29 +137,30 @@ def process_raw_aircraft_info_data(data):
 
 
 def get_raw_airlines_data(url):
-    return get_raw_data(url, 'airlineList', 'li')
+    return get_raw_data(url, 'tbl-datatable', 'tbody', 'tr')
 
 
 def process_raw_airlines_data(data):
     result = []
     for entry in data:
-        item = {}
-        item['name'] = entry.attrs['data-name']
-        item['iata'] = entry.attrs['data-iata']
-        item['icao'] = entry.attrs['data-icao']
-        img_tag = entry.find('img')
-        if img_tag:
-            img_path = img_tag.attrs['src']
-            item['image'] = ROOT + img_path
-        else:
-            item['image'] = ''
-        key_tag = entry.find('a')
-        if key_tag:
-            key = key_tag.attrs['href'].split('/')[3]
-            item['key'] = key
-        else:
-            item['key'] = ''
-        result.append(item)
+        cells = entry.find_all('td')
+        if cells:
+            for cell in cells:
+                link = cell.find('a')
+                if link:
+                    if 'data-country' in link.attrs:
+                        record = {}
+                        for attr in link.attrs:
+                            if attr not in ['href','class','onclick','target']:
+                                attr_new = attr.replace('data-','')
+                                record[attr_new] = link[attr]
+                        span = link.find('span')
+                        if span:
+                            images = span.find_all('img')
+                            if images:
+                                for image in images:
+                                    record['img'] = image['bn-lazy-src']
+                        result.append(record)
     return result
 
 
@@ -185,14 +192,13 @@ def get_airline_fleet_data(url):
 
 
 def get_raw_airline_flight_data(url):
-    return get_raw_data(url, 'listFlights', 'a')
+    data = get_raw_data_json(url, 'result.response.data')
+    return data[0] if data else []
 
 
 def process_raw_airline_flight_data(data):
-    result = []
-    for entry in data:
-        result.append(encode_and_get(entry.text))
-    return result
+    #TODO fix later
+    return data
 
 
 def get_airline_flight_data(url):
