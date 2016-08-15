@@ -24,7 +24,9 @@ Eventually we will add more sites and more information to the API.
 IPython notebook example
 ========================
 
-TBD
+Here are a few basic examples
+
+http://nbviewer.jupyter.org/github/supercoderz/pyflightdata/blob/master/pyflightdata%20examples.ipynb
 
 Installation and Usage
 ======================
