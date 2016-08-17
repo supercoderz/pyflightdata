@@ -24,8 +24,7 @@ def process_raw_flight_data(data, by_tail=False):
 
 def get_data(url, by_tail=False):
     data = get_raw_flight_data(url)
-    result = process_raw_flight_data(data, by_tail)
-    return result
+    return process_raw_flight_data(data, by_tail)
 
 # Handle getting countries
 
@@ -59,12 +58,9 @@ def process_raw_country_data(data):
 
 def get_countries_data():
     data = get_raw_country_data()
-    result = process_raw_country_data(data)
-    return result
+    return process_raw_country_data(data)
 
 # Handle getting the airports in a country
-
-
 def get_raw_airport_data(url):
     return get_raw_data(url, 'tbl-datatable', 'tbody','tr') or []
 
@@ -91,16 +87,12 @@ def process_raw_airport_data(data):
 
 def get_airports_data(url):
     data = get_raw_airport_data(url)
-    result = process_raw_airport_data(data)
-    return result
-
+    return process_raw_airport_data(data)
 
 # handle aircraft information
 def get_aircraft_data(url):
     info_data = get_raw_aircraft_info_data(url)
-    result = process_raw_aircraft_info_data(info_data)
-    return result
-
+    return process_raw_aircraft_info_data(info_data)
 
 def get_raw_aircraft_image_data(key):
     return get_raw_data_json(IMAGE_BASE.format(key), 'thumbnails') or []
@@ -187,8 +179,7 @@ def process_raw_airlines_data(data):
 
 def get_airlines_data(url):
     data = get_raw_airlines_data(url)
-    result = process_raw_airlines_data(data)
-    return result
+    return process_raw_airlines_data(data)
 
 # Handle getting the fleet
 
@@ -228,8 +219,7 @@ def process_raw_airline_fleet_data(data):
 
 def get_airline_fleet_data(url):
     data = get_raw_airline_fleet_data(url)
-    result = process_raw_airline_fleet_data(data)
-    return result
+    return process_raw_airline_fleet_data(data)
 
 # Handle getting the all the flights
 
@@ -256,5 +246,4 @@ def process_raw_airline_flight_data(data):
 
 def get_airline_flight_data(url):
     data = get_raw_airline_flight_data(url)
-    result = process_raw_airline_flight_data(data)
-    return result
+    return process_raw_airline_flight_data(data)

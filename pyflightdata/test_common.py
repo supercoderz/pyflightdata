@@ -1,7 +1,8 @@
 from .common import *
 from .common_fr24 import FLT_BASE,AIRPORT_BASE
+from flaky import flaky
 
-
+@flaky(max_runs=3)
 class TestCommon(object):
 
     def test_get_page_or_none_1(self):

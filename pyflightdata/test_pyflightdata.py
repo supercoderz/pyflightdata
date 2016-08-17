@@ -1,6 +1,7 @@
 from .flightdata import *
+from flaky import flaky
 
-
+@flaky(max_runs=3)
 class TestGetByFlightNumber(object):
 
     def test_simple_get(self):
