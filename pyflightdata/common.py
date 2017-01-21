@@ -11,6 +11,8 @@ def json_load_byteified(file_handle):
     )
 
 def json_loads_byteified(json_text):
+    if type(json_text) == bytes:
+        json_text = json_text.decode('utf-8')
     return _byteify(
         json.loads(json_text, object_hook=_byteify),
         ignore_dicts=True
@@ -18,7 +20,7 @@ def json_loads_byteified(json_text):
 
 def _byteify(data, ignore_dicts = False):
     # if this is a unicode string, return its string representation
-    if isinstance(data, unicode):
+    if isinstance(data, str):
         return encode_and_get(data)
     # if this is a list of values, return list of byteified values
     if isinstance(data, list):
@@ -28,7 +30,7 @@ def _byteify(data, ignore_dicts = False):
     if isinstance(data, dict) and not ignore_dicts:
         return {
             _byteify(key, ignore_dicts=True): _byteify(value, ignore_dicts=True)
-            for key, value in data.iteritems()
+            for key, value in data.items()
         }
     # if it's anything else, return it in its original form
     return data
@@ -94,4 +96,4 @@ def encode_and_get(string):
     if sys.version_info[0] < 3:
         return string.encode('unicode-escape').replace('\\xa0', ' ')
     else:
-        return string.encode('unicode-escape').replace(b'\\xa0', b' ')
+        return string.encode('unicode-escape').replace(b'\\xa0', b' ').decode('utf-8')
