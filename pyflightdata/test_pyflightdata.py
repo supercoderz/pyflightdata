@@ -1,7 +1,7 @@
 from .flightdata import *
 from flaky import flaky
 
-@flaky(max_runs=3)
+@flaky(max_runs=5)
 class TestGetByFlightNumber(object):
 
     def test_simple_get(self):
@@ -11,7 +11,7 @@ class TestGetByFlightNumber(object):
         result = get_history_by_flight_number('MI474')
         assert result.__len__() > 0
 
-
+@flaky(max_runs=5)
 class TestGetByTailNumber(object):
 
     def test_simple_get(self):
@@ -25,7 +25,7 @@ class TestGetByTailNumber(object):
         result = get_info_by_tail_number('VT-ALL')
         assert result.__len__() > 0
 
-
+@flaky(max_runs=5)
 class TestOtherFeatures(object):
 
     def test_get_countries(self):

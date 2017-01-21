@@ -1,7 +1,7 @@
 from .common_fr24 import *
 from flaky import flaky
 
-@flaky(max_runs=3)
+@flaky(max_runs=5)
 class TestCommonFR24(object):
 
     def test_get_raw_flight_data_1(self):

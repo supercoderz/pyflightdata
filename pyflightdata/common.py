@@ -91,7 +91,7 @@ def get_raw_data_json(url, path):
 
 
 def encode_and_get(string):
-    if sys.version < '3':
+    if sys.version_info[0] < 3:
         return string.encode('unicode-escape').replace('\\xa0', ' ')
     else:
         return string.encode('unicode-escape').replace(b'\\xa0', b' ')
