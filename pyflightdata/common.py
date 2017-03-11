@@ -35,6 +35,18 @@ def _byteify(data, ignore_dicts = False):
     # if it's anything else, return it in its original form
     return data
 
+def put_to_page(url,params):
+    try:
+        headers={
+            'User-Agent':'pyflightdata',
+            'Method':'POST',
+            'Origin':'https://www.flightradar24.com'
+        }
+        result=requests.put(url,headers=headers,params=params)
+    except:
+        return None
+    return result.content if result.status_code==200 else None
+
 def get_page_or_none(url):
     try:
         headers = {

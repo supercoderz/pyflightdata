@@ -1,14 +1,14 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, get_data, get_countries_data
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
-
+from common import put_to_page
 
 #Flight related information - primarily from flightradar24
-def get_history_by_flight_number(flight_number):
-    url = FLT_BASE.format(flight_number)
+def get_history_by_flight_number(flight_number,token=''):
+    url = FLT_BASE.format(flight_number,token)
     return get_data(url)
 
-def get_history_by_tail_number(tail_number):
-    url = REG_BASE.format(tail_number)
+def get_history_by_tail_number(tail_number,token=''):
+    url = REG_BASE.format(tail_number,token)
     return get_data(url, True)
 
 def get_countries():
@@ -44,3 +44,8 @@ def get_path_map(*pathsegment,**options):
 #Pictures from jetphotos and airliners.net
 def get_images_by_tail(tail_number):
     pass
+    
+def login(user,password):
+    params = {'user':user,'password':password,'remember':'false','type':'web'}
+    response = put_to_page(LOGIN_URL,params)
+    print response
