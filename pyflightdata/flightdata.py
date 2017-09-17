@@ -1,6 +1,6 @@
 from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
-from common import put_to_page
+from common import put_to_page, json_loads_byteified
 
 #Flight related information - primarily from flightradar24
 def get_history_by_flight_number(flight_number,token=''):
@@ -46,11 +46,8 @@ def get_images_by_tail(tail_number):
     pass
     
 def login(user,password):
-    global AUTH_TOKEN
-    AUTH_TOKEN=None
     from requests import Session
     session=Session()
-    session.head(ROOT)
     response = session.post(
         url=LOGIN_URL,
         data={
@@ -60,9 +57,9 @@ def login(user,password):
             'type': 'web'
         },
         headers={
-            'Referer': ROOT
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0'
         }
     )
-    print response
-    if 'token' in response.keys():
-        AUTH_TOKEN=response['token']
+    response = json_loads_byteified(response.content) if response.status_code==200 else None
+    if unicode('token') in response.keys():
+        return response[unicode('token')]
