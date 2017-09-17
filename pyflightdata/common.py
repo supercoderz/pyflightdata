@@ -45,7 +45,7 @@ def put_to_page(url,params):
         result=requests.put(url,headers=headers,params=params)
     except:
         return None
-    return result.content if result.status_code==200 else None
+    return json_loads_byteified(result.content) if result.status_code==200 else None
 
 def get_page_or_none(url):
     try:

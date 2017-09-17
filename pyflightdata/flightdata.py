@@ -1,4 +1,4 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, get_data, get_countries_data
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
 from common import put_to_page
 
@@ -46,6 +46,23 @@ def get_images_by_tail(tail_number):
     pass
     
 def login(user,password):
-    params = {'user':user,'password':password,'remember':'false','type':'web'}
-    response = put_to_page(LOGIN_URL,params)
+    global AUTH_TOKEN
+    AUTH_TOKEN=None
+    from requests import Session
+    session=Session()
+    session.head(ROOT)
+    response = session.post(
+        url=LOGIN_URL,
+        data={
+            'email': user,
+            'password': password,
+            'remember': 'false',
+            'type': 'web'
+        },
+        headers={
+            'Referer': ROOT
+        }
+    )
     print response
+    if 'token' in response.keys():
+        AUTH_TOKEN=response['token']

@@ -1,0 +1,366 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ax",
+				"axis"
+			],
+			[
+				"l",
+				"legend"
+			],
+			[
+				"date",
+				"datetime"
+			],
+			[
+				"y",
+				"ylabel"
+			],
+			[
+				"fet",
+				"fetch_all_taxi_data"
+			],
+			[
+				"gr",
+				"grid_height"
+			],
+			[
+				"psi",
+				"psi_update"
+			],
+			[
+				"hea",
+				"heavy_rain"
+			],
+			[
+				"tw",
+				"two_hour"
+			],
+			[
+				"from",
+				"fromstring"
+			],
+			[
+				"db",
+				"dbname"
+			],
+			[
+				"grid",
+				"grid_height"
+			],
+			[
+				"gri",
+				"grid_height"
+			],
+			[
+				"get",
+				"get_width"
+			],
+			[
+				"d",
+				"directory"
+			],
+			[
+				"file",
+				"file_to_grid"
+			],
+			[
+				"rea",
+				"read_json"
+			],
+			[
+				"no",
+				"non_zero_cells"
+			],
+			[
+				"n",
+				"non_zero_cells"
+			],
+			[
+				"sor",
+				"sorted_cells"
+			],
+			[
+				"print",
+				"print_grid"
+			],
+			[
+				"ma",
+				"max_y"
+			],
+			[
+				"min",
+				"min_y"
+			],
+			[
+				"local",
+				"local_action"
+			],
+			[
+				"Lo",
+				"logLevel"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "pyflightdata/flightdata.py",
+			"settings":
+			{
+				"buffer_size": 1723,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 87.0,
+		"last_filter": "instal",
+		"selected_items":
+		[
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"install pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Indexing Status"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/hari/python/py2/sentiment/sentiment/code/basic.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/sgtaxidata/visualize.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/api/taxis.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/api/utils.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/api/constants.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/api/weather.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/notebooks/Methodical study.ipynb",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/visualize.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/run_weather.sh",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/run.sh",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/cleanup.yml",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/deploy.yml",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/fetch_weather_to_file.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/fetch_to_file.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/create_db.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/constants.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/weather.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/utils.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/simple_realtime.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/simple_visual.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/basic.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/taxis.py",
+		"/Users/hari/python/py2/taxidata/sg-taxidata/cleanup.yaml",
+		"/Users/hari/ansible/managemypi/create_hosts.py",
+		"/Users/hari/ansible/managemypi/search_pi.sh",
+		"/Users/hari/ansible/managemypi/basic/delete_keys.yaml",
+		"/Users/hari/ansible/managemypi/basic/restart.yaml",
+		"/Users/hari/ansible/managemypi/basic/power_down.yaml",
+		"/Users/hari/ansible/managemypi/basic/setup_host.yaml",
+		"/Users/hari/ansible/managemypi/docker/docker_remove.yaml",
+		"/Users/hari/ansible/managemypi/docker/docker_setup.yaml",
+		"/Users/hari/ansible/managemypi/basic/apt_update.yaml",
+		"/Users/hari/python/py2/flight/pyflightdata/pyflightdata/common.py",
+		"/Users/hari/python/py2/divvy/data-divvy/requirements.txt",
+		"/Users/hari/kdb_learning/utils.q",
+		"/Users/hari/kdb_learning/logging.q",
+		"/Users/hari/kdb_learning/tickerplant.q",
+		"/Users/hari/kdb_learning/schema/registry.q",
+		"/Users/hari/kdb_learning/registry.q"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "pyflightdata/flightdata.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1723,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"project": "flightdata.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
