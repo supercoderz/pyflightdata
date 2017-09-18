@@ -52,7 +52,7 @@ def process_raw_country_data(data):
                         images = link.find_all('img')
                         if images:
                             for image in images:
-                                record['img'] = image['bn-lazy-src']
+                                record['img'] = image['data-bn-lazy-src']
                         result.append(record)
     return result
 
@@ -165,7 +165,7 @@ def process_raw_airlines_data(data):
                             images = span.find_all('img')
                             if images:
                                 for image in images:
-                                    record['img'] = image['bn-lazy-src']
+                                    record['img'] = image['data-bn-lazy-src']
                 if 'class' in cell.attrs:
                     if 'text-right' in cell['class']:
                         value = encode_and_get(cell.text.strip())
