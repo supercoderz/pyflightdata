@@ -34,36 +34,42 @@ You can install with ``pip``
 
     pip install pyflightdata
 
+You need to instantiate the API first. You have the option of passing in your flightradar24 credentials in the form of email and password.
+If you dont pass in the credentials then it will invoke the API without the authorization key.
+
+    from pyflightdata import FlightData
+    api=FlightData()
+
 Usage is very simple. To get the list of all countries with airports use ``get_countries``
 
-    get_countries()
+    api.get_countries()
 	
 To get list of all airports and the airport codes in a given country use ``get_airports``
 
-    get_airports('India')
+    api.get_airports('India')
 	
 This will return a list of (name,code) tuples.
 
 To get information on a particular aircraft, use ``get_info_by_tail_number``
 
-    get_info_by_tail_number('VT-ALL')
+    api.get_info_by_tail_number('VT-ALL')
 	
 This will return a dict.
 
 To get flight history, you can use tail number or flight number. Both will return a list of dicts with the details of date of flight, from and to, tail number or flight, status and arrival departure times. The commands are
 
-    get_history_by_flight_number('AI101')
+    api.get_history_by_flight_number('AI101')
 	
 or
 
-    get_history_by_tail_number('VT-ALL')
+    api.get_history_by_tail_number('VT-ALL')
 	
 There are methods that you can use to get the list of all the airlines, their fleet list and list of all flight numbers
 
-    get_airlines()
+    api.get_airlines()
 	
 This returns a list of dicts. Each airline dict has a field called 'key' which can be used to get the fleet and flight numbers
 
-    get_fleet('air-india-aic')
+    api.get_fleet('air-india-aic')
 	
-    get_flights('air-india-aic')
+    api.get_flights('air-india-aic')

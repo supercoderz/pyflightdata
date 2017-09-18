@@ -5,6 +5,8 @@ from common import put_to_page, json_loads_byteified
 
 class FlightData(object):
 
+    AUTH_TOKEN=''
+
     def __init__(self, email=None,password=None):
         super(FlightData, self).__init__()
         if email and password:
@@ -12,11 +14,11 @@ class FlightData(object):
 
     #Flight related information - primarily from flightradar24
     def get_history_by_flight_number(self,flight_number,token=''):
-        url = FLT_BASE.format(flight_number,token)
+        url = FLT_BASE.format(flight_number,token,FlightData.AUTH_TOKEN)
         return get_data(url)
 
     def get_history_by_tail_number(self,tail_number,token=''):
-        url = REG_BASE.format(tail_number,token)
+        url = REG_BASE.format(tail_number,token,FlightData.AUTH_TOKEN)
         return get_data(url, True)
 
     def get_countries(self):

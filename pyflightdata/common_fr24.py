@@ -1,8 +1,8 @@
 from .common import *
 
 ROOT = 'http://www.flightradar24.com'
-REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100&token={1}'
-FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100&token={1}'
+REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100&token={1}&enc={2}'
+FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100&token={1}&enc={2}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/{0}'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
@@ -199,7 +199,8 @@ def process_raw_airline_fleet_data(data):
             div = div.find('div')
             if div:
                 atype = encode_and_get(div.text.strip())
-                atype = atype[0:atype.index('\\t')]
+                if '\\t' in atype:
+                    atype = atype[0:atype.index('\\t')]
                 record['aircraft-type'] = atype
                 span = div.find('span')
                 if span:
