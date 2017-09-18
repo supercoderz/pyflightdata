@@ -1,10 +1,10 @@
 pyflightdata
 ============
 
-[![Travis](https://img.shields.io/travis/supercoderz/pyflightdata.svg?maxAge=2592000)]()
-[![PyPI](https://img.shields.io/pypi/dw/pyflightdata.svg?maxAge=2592000)]()
-[![PyPI](https://img.shields.io/pypi/v/pyflightdata.svg?maxAge=2592000)]()
-[![PyPI](https://img.shields.io/pypi/pyversions/pyflightdata.svg?maxAge=2592000)]()
+[![Travis](https://img.shields.io/travis/supercoderz/pyflightdata.svg?maxAge=2592000)](https://travis-ci.org/supercoderz/pyflightdata)
+[![PyPI](https://img.shields.io/pypi/dw/pyflightdata.svg?maxAge=2592000)](https://pypi.python.org/pypi/pyflightdata)
+[![PyPI](https://img.shields.io/pypi/v/pyflightdata.svg?maxAge=2592000)](https://pypi.python.org/pypi/pyflightdata)
+[![PyPI](https://img.shields.io/pypi/pyversions/pyflightdata.svg?maxAge=2592000)](https://pypi.python.org/pypi/pyflightdata)
 
 A simple library to get flight data from flightradar24 from within Python code.
 
