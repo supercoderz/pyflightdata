@@ -1,11 +1,9 @@
 from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, get_data, get_countries_data
 from .common_fr24 import get_airports_data, get_aircraft_data, get_airlines_data, get_airline_fleet_data, get_airline_flight_data
-from common import put_to_page, json_loads_byteified
+from common import FlightMixin,put_to_page, json_loads_byteified
 
 
-class FlightData(object):
-
-    AUTH_TOKEN=''
+class FlightData(FlightMixin):
 
     def __init__(self, email=None,password=None):
         super(FlightData, self).__init__()
@@ -13,12 +11,12 @@ class FlightData(object):
             self.login(email,password)
 
     #Flight related information - primarily from flightradar24
-    def get_history_by_flight_number(self,flight_number,token=''):
-        url = FLT_BASE.format(flight_number,token,FlightData.AUTH_TOKEN)
+    def get_history_by_flight_number(self,flight_number):
+        url = FLT_BASE.format(flight_number,str(self.AUTH_TOKEN))
         return get_data(url)
 
-    def get_history_by_tail_number(self,tail_number,token=''):
-        url = REG_BASE.format(tail_number,token,FlightData.AUTH_TOKEN)
+    def get_history_by_tail_number(self,tail_number):
+        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN))
         return get_data(url, True)
 
     def get_countries(self):
@@ -56,20 +54,24 @@ class FlightData(object):
         pass
         
     def login(self,user,password):
-        from requests import Session
-        session=Session()
-        response = session.post(
+        response = FlightData.session.post(
             url=LOGIN_URL,
             data={
                 'email': user,
                 'password': password,
-                'remember': 'false',
+                'remember': 'true',
                 'type': 'web'
             },
             headers={
+                'Origin':'https://www.flightradar24.com',
+                'Referer':'https://www.flightradar24.com',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0'
             }
         )
         response = json_loads_byteified(response.content) if response.status_code==200 else None
-        if unicode('token') in response.keys():
-            FlightData.AUTH_TOKEN=response[unicode('token')]
+        if response:
+            token=response['userData']['subscriptionKey']
+            self.AUTH_TOKEN=token
+
+    def logout(self):
+        self.AUTH_TOKEN=''

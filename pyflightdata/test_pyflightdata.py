@@ -10,7 +10,7 @@ class TestGetByFlightNumber(object):
         f.get_history_by_flight_number('AI101')
 
     def test_check_there_is_history_data(self):
-        result = f.get_history_by_flight_number('MI474')
+        result = f.get_history_by_flight_number('AI101')
         assert result.__len__() > 0
 
 @flaky(max_runs=5)

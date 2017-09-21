@@ -3,6 +3,13 @@ from bs4 import BeautifulSoup
 import sys
 import json
 from jsonpath_rw import parse
+from requests import Session
+
+class FlightMixin(object):
+
+    session=Session()
+    AUTH_TOKEN=''
+
 
 def json_load_byteified(file_handle):
     return _byteify(
@@ -38,22 +45,29 @@ def _byteify(data, ignore_dicts = False):
 def put_to_page(url,params):
     try:
         headers={
-            'User-Agent':'pyflightdata',
+            'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
             'Method':'POST',
-            'Origin':'https://www.flightradar24.com'
+            'Host':'api.flightradar24.com',
+            'Origin':'https://www.flightradar24.com',
+            'Referer':'https://www.flightradar24.com'
         }
-        result=requests.put(url,headers=headers,params=params)
-    except:
+        result=FlightMixin.session.put(url,headers=headers,params=params)
+    except Exception,e: 
+        print str(e)
         return None
     return json_loads_byteified(result.content) if result.status_code==200 else None
 
 def get_page_or_none(url):
     try:
         headers = {
-            'User-Agent': 'pyflightdata'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
+            'Host':'api.flightradar24.com',
+            'Origin':'https://www.flightradar24.com',
+            'Referer':'https://www.flightradar24.com'
         }
-        result = requests.get(url,headers=headers)
-    except:
+        result=FlightMixin.session.get(url,headers=headers)
+    except Exception,e: 
+        print str(e)
         return None
     return result.content if result.status_code == 200 else None
 

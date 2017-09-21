@@ -15,9 +15,6 @@ class TestCommon(object):
     def test_get_soup_or_none_1(self):
         assert get_soup_or_none(None) is None
 
-    def test_get_soup_or_none_2(self):
-        assert get_soup_or_none('http://www.flightradar24.com/') is not None
-
     def test_get_raw_data_json(self):
         url = FLT_BASE.format('ek7','',FlightData.AUTH_TOKEN)
         assert get_raw_data_json(url, 'result.response.data').__len__() > 0
