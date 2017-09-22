@@ -11,12 +11,12 @@ class FlightData(FlightMixin):
             self.login(email,password)
 
     #Flight related information - primarily from flightradar24
-    def get_history_by_flight_number(self,flight_number):
-        url = FLT_BASE.format(flight_number,str(self.AUTH_TOKEN))
+    def get_history_by_flight_number(self,flight_number,page=1,limit=100):
+        url = FLT_BASE.format(flight_number,str(self.AUTH_TOKEN),page,limit)
         return get_data(url)
 
-    def get_history_by_tail_number(self,tail_number):
-        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN))
+    def get_history_by_tail_number(self,tail_number,page=1,limit=100):
+        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
         return get_data(url, True)
 
     def get_countries(self):

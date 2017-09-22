@@ -47,7 +47,6 @@ def put_to_page(url,params):
         headers={
             'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
             'Method':'POST',
-            'Host':'api.flightradar24.com',
             'Origin':'https://www.flightradar24.com',
             'Referer':'https://www.flightradar24.com'
         }
@@ -61,7 +60,6 @@ def get_page_or_none(url):
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
-            'Host':'api.flightradar24.com',
             'Origin':'https://www.flightradar24.com',
             'Referer':'https://www.flightradar24.com'
         }

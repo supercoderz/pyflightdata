@@ -1,8 +1,8 @@
 from .common import *
 
 ROOT = 'http://www.flightradar24.com'
-REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page=1&limit=100&token={1}'
-FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page=1&limit=100&token={1}'
+REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}'
+FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/{0}'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
