@@ -40,6 +40,16 @@ If you dont pass in the credentials then it will invoke the API without the auth
     from pyflightdata import FlightData
     api=FlightData()
 
+In case you want to use your flightradar24 user ID, then you can pass in the credentials to FlightData
+
+    api=FlightData(user_email,password)
+
+    api.login(user_email,password)
+
+    api.logout()
+
+Using your credentials will allow you to get more data as per your plan with flighradar24
+
 Usage is very simple. To get the list of all countries with airports use ``get_countries``
 
     api.get_countries()
