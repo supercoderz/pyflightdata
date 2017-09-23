@@ -73,6 +73,10 @@ To get flight history, you can use tail number or flight number. Both will retur
 or
 
     api.get_history_by_tail_number('VT-ALL')
+
+The above two methods also allow you to specify the page number and the limit as well. The default is page number 1 and limit 100, the maximum limit.
+
+    api.get_history_by_tail_number('VT-ALL',1,100)
 	
 There are methods that you can use to get the list of all the airlines, their fleet list and list of all flight numbers
 
