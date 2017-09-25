@@ -1,9 +1,14 @@
 from .flightdata import FlightData
 from flaky import flaky
+import time
+
+def delay_rerun(*args):
+    time.sleep(5)
+    return True
 
 f=FlightData()
 
-@flaky(max_runs=5)
+@flaky(max_runs=5,rerun_filter=delay_rerun)
 class TestGetByFlightNumber(object):
 
     def test_simple_get(self):
@@ -13,7 +18,7 @@ class TestGetByFlightNumber(object):
         result = f.get_history_by_flight_number('AI101')
         assert result.__len__() > 0
 
-@flaky(max_runs=5)
+@flaky(max_runs=5,rerun_filter=delay_rerun)
 class TestGetByTailNumber(object):
 
     def test_simple_get(self):
@@ -27,7 +32,7 @@ class TestGetByTailNumber(object):
         result = f.get_info_by_tail_number('VT-ALL')
         assert result.__len__() > 0
 
-@flaky(max_runs=5)
+@flaky(max_runs=5,rerun_filter=delay_rerun)
 class TestOtherFeatures(object):
 
     def test_get_countries(self):
