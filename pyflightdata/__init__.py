@@ -1,1 +1,1 @@
-from flightdata import FlightData
+from .flightdata import FlightData
