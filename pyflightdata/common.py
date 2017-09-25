@@ -53,7 +53,7 @@ class ProcessorMixin(object):
                 'Referer':'https://www.flightradar24.com'
             }
             result=FlightMixin.session.put(url,headers=headers,params=params)
-        except Exception,e: 
+        except: 
             return None
         return self.json_loads_byteified(result.content) if result.status_code==200 else None
 
