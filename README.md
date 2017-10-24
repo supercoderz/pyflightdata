@@ -74,7 +74,7 @@ or
 
     api.get_history_by_tail_number('VT-ALL')
 
-The above two methods also allow you to specify the page number and the limit as well. The default is page number 1 and limit 100, the maximum limit.
+The above two methods also allow you to specify the page number and the limit as well. The default is page number 1 and limit 100, the maximum limit. If you have a paid member account and want to get more than 100 records, then you need to keep increasing the page number. At the moment there is no way to know how many pages are there. The limit parameter has a max value of 100 and is used to control the number of elements retrieved on a page.
 
     api.get_history_by_tail_number('VT-ALL',1,100)
 	
