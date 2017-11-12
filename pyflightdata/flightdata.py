@@ -24,7 +24,7 @@ class FlightData(FlightMixin):
         return self.fr24.get_countries_data()
 
     def get_airports(self,country):
-        url = AIRPORT_BASE.format(country)
+        url = AIRPORT_BASE.format(country.replace(" ","-"))
         return self.fr24.get_airports_data(url)
 
     def get_info_by_tail_number(self,tail_number):
