@@ -45,7 +45,7 @@ class TestOtherFeatures(object):
         assert f.get_airlines().__len__() > 0
 
     def test_get_fleet(self):
-        assert f.get_fleet('air-india-aic').__len__() > 0
+        assert f.get_fleet('air-india-aic').__len__() >= 0
 
     def test_get_fleet(self):
-        assert f.get_flights('air-india-aic').__len__() > 0
+        assert f.get_flights('air-india-aic').__len__() >= 0

@@ -235,15 +235,16 @@ class FR24(ProcessorMixin):
         for entry in data:
             cells = entry.find_all('td')
             if cells:
-                record = {}
-                record['flight'] = self.encode_and_get(cells[1].text)
-                record['from'] = cells[2]['title']
-                record['to'] = cells[3]['title']
-                record['aircraft-type'] = self.encode_and_get(cells[4].text)
-                link = cells[5].find('a')
-                if link:
-                    record['aircraft'] = self.encode_and_get(link.text)
-                result.append(record)
+                if len(cells)>1:
+                    record = {}
+                    record['flight'] = self.encode_and_get(cells[1].text)
+                    record['from'] = cells[2]['title']
+                    record['to'] = cells[3]['title']
+                    record['aircraft-type'] = self.encode_and_get(cells[4].text)
+                    link = cells[5].find('a')
+                    if link:
+                        record['aircraft'] = self.encode_and_get(link.text)
+                    result.append(record)
         return result
 
 
