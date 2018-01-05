@@ -142,3 +142,16 @@ class TestCommonFR24(object):
     def test_get_airport_weather(self):
         data = self.fr24.get_airport_weather(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
         assert data.__len__() >= 0
+
+    def test_get_airport_stats(self):
+        data = self.fr24.get_airport_stats(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
+        assert data.__len__() >= 0
+
+    def test_get_airport_details(self):
+        data = self.fr24.get_airport_details(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
+        assert data.__len__() >= 0
+
+    def test_get_airport_reviews(self):
+        data = self.fr24.get_airport_reviews(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
+        assert data.__len__() >= 0
+

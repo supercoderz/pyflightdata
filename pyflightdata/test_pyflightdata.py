@@ -50,5 +50,15 @@ class TestOtherFeatures(object):
     def test_get_flights(self):
         assert f.get_flights('air-india-aic').__len__() >= 0
 
-    def test_get_airport_stats(self):
+    def test_get_airport_weather(self):
         assert f.get_airport_weather('SIN').__len__() >= 0
+
+    def test_get_airport_stats(self):
+        assert f.get_airport_stats('SIN').__len__() >= 0
+
+    def test_get_airport_details(self):
+        assert f.get_airport_details('SIN').__len__() >= 0
+
+    def test_get_airport_reviews(self):
+        assert f.get_airport_reviews('SIN').__len__() >= 0
+
