@@ -1,6 +1,6 @@
-from .flightdata import FlightData
 from flaky import flaky
 import time
+from .flightdata import FlightData
 
 def delay_rerun(*args):
     time.sleep(5)
@@ -47,5 +47,8 @@ class TestOtherFeatures(object):
     def test_get_fleet(self):
         assert f.get_fleet('air-india-aic').__len__() >= 0
 
-    def test_get_fleet(self):
+    def test_get_flights(self):
         assert f.get_flights('air-india-aic').__len__() >= 0
+
+    def test_get_airport_stats(self):
+        assert f.get_airport_weather('SIN').__len__() >= 0

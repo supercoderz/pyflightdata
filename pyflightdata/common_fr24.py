@@ -4,6 +4,7 @@ ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}'
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
+AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/{0}'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
 IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
@@ -11,6 +12,14 @@ LOGIN_URL='https://www.flightradar24.com/user/login'
 
 
 class FR24(ProcessorMixin):
+    #airport stats
+
+    def get_airport_weather(self,url):
+        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.weather')
+        if data:
+            return data[0] or []
+        return []
+
     # Handle all the flights data
 
     def get_raw_flight_data(self,url):

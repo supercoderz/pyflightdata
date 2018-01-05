@@ -138,3 +138,7 @@ class TestCommonFR24(object):
         assert data.__len__() >= 0
         result = self.fr24.process_raw_airline_flight_data(data)
         assert result.__len__() >= 0
+
+    def test_get_airport_weather(self):
+        data = self.fr24.get_airport_weather(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
+        assert data.__len__() >= 0
