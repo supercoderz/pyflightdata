@@ -25,6 +25,8 @@ class ProcessorMixin(object):
         # if this is a unicode string, return its string representation
         if isinstance(data, str):
             return self.encode_and_get(data)
+        if sys.version_info[0] < 3 and isinstance(data, unicode):
+            return self.encode_and_get(data)
         # if this is a list of values, return list of byteified values
         if isinstance(data, list):
             return [ self._byteify(item, ignore_dicts=True) for item in data ]
