@@ -1,4 +1,4 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
 from .common import FlightMixin
 
 
@@ -42,6 +42,35 @@ class FlightData(FlightMixin):
     def get_flights(self,airline_key):
         url = AIRLINE_FLT_BASE.format(airline_key)
         return self.fr24.get_airline_flight_data(url)
+
+    def get_airport_weather(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_weather(url)
+
+    def get_airport_stats(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_stats(url)
+
+    def get_airport_details(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_details(url)
+
+    def get_airport_reviews(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_reviews(url)
+
+    def get_airport_arrivals(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_arrivals(url)
+
+    def get_airport_departures(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_departures(url)
+
+    def get_airport_onground(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_onground(url)
+
 
     #Route and range related information from gcmap
     def get_range_map(self,airport,*range,**options):

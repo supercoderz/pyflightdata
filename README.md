@@ -8,8 +8,8 @@ pyflightdata
 
 A simple library to get flight data from flightradar24 from within Python code.
 
-Please note that this is not an offical API and does not use any undocumented API from flightradar24.
-This code simply automates what you would do from a browser and extracts the flight history by aircraft registration or by the flight number. 
+Please note that this is not an offical API and does not use any (semi-)official API from flightradar24.
+This code simply automates what you would do from a browser and extracts the flight history by aircraft registration or by the flight number, and other details in a similar fashion 
 
 We depend on the structure of the pages, so if the pages change, then this API will need to be updated. There is no defined plan to look out for these changes and keep the API updated. So do not use this in mission critical applications.
 
@@ -57,6 +57,11 @@ Usage is very simple. To get the list of all countries with airports use ``get_c
 To get list of all airports and the airport codes in a given country use ``get_airports``
 
     api.get_airports('India')
+
+Once you have the airport details, you can use the iata code from the results and call one of the many ``get_airport_*`` methods. These provide information like the airport details, weather, reviews and also the arrival/departure/on ground information.
+
+    api.get_airport_arrivals('SIN')
+    api.get_airport_departures('SIN')
 	
 This will return a list of (name,code) tuples.
 
