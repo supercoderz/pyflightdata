@@ -1,4 +1,5 @@
 from .common import ProcessorMixin
+from .json_helper import fltr
 
 ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}'
@@ -12,57 +13,50 @@ LOGIN_URL='https://www.flightradar24.com/user/login'
 
 
 class FR24(ProcessorMixin):
+
+    FILTER_JSON_KEYS=['hex','images','id','logo','row','icon']
+
     #airport stats
 
+    def filter_and_get_data(self,data):
+        if data:
+            res=data[0] or []
+            return fltr(res,self.FILTER_JSON_KEYS)
+        return []
+        
     def get_airport_weather(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.weather')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_stats(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.details.stats')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_details(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.details')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_reviews(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.flightdiary')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_arrivals(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.arrivals.data')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_departures(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.departures.data')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def get_airport_onground(self,url):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.ground.data')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     # Handle all the flights data
 
     def get_raw_flight_data(self,url):
         data = self.get_raw_data_json(url, 'result.response.data')
-        if data:
-            return data[0] or []
-        return []
+        return self.filter_and_get_data(data) or []
 
     def process_raw_flight_data(self,data, by_tail=False):
         #TODO check later if we need to parse this data - for now return full set

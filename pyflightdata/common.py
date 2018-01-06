@@ -13,18 +13,12 @@ class FlightMixin(object):
 
 class ProcessorMixin(object):
 
-    def json_load_byteified(self,file_handle):
-        return _byteify(
-            json.load(file_handle, object_hook=_byteify),
-            ignore_dicts=True
-        )
-
     def json_loads_byteified(self,json_text):
         if type(json_text) == bytes:
             json_text = json_text.decode('utf-8')
         return self._byteify(
             json.loads(json_text, object_hook=self._byteify),
-            ignore_dicts=True
+            ignore_dicts=False
         )
 
     def _byteify(self,data, ignore_dicts = False):
@@ -38,7 +32,7 @@ class ProcessorMixin(object):
         # but only if we haven't already byteified it
         if isinstance(data, dict) and not ignore_dicts:
             return {
-                self._byteify(key, ignore_dicts=True): self._byteify(value, ignore_dicts=True)
+                self._byteify(key, ignore_dicts=False): self._byteify(value, ignore_dicts=False)
                 for key, value in data.items()
             }
         # if it's anything else, return it in its original form
@@ -71,7 +65,7 @@ class ProcessorMixin(object):
 
     def get_soup_or_none(self,content):
         try:
-            return BeautifulSoup(content,"lxml")
+            return BeautifulSoup(content,"lxml",from_encoding='utf-8')
         except:
             return None
 
