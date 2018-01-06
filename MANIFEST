@@ -4,6 +4,7 @@ pyflightdata/__init__.py
 pyflightdata/common.py
 pyflightdata/common_fr24.py
 pyflightdata/flightdata.py
+pyflightdata/json_helper.py
 pyflightdata/test_common.py
 pyflightdata/test_common_fr24.py
 pyflightdata/test_pyflightdata.py
