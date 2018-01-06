@@ -62,3 +62,12 @@ class TestOtherFeatures(object):
     def test_get_airport_reviews(self):
         assert f.get_airport_reviews('SIN').__len__() >= 0
 
+    def test_get_airport_arrivals(self):
+        assert f.get_airport_arrivals('SIN').__len__() >= 0
+
+    def test_get_airport_departures(self):
+        assert f.get_airport_departures('SIN').__len__() >= 0
+
+    def test_get_airport_onground(self):
+        assert f.get_airport_onground('SIN').__len__() >= 0
+

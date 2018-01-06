@@ -59,6 +59,19 @@ class FlightData(FlightMixin):
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
         return self.fr24.get_airport_reviews(url)
 
+    def get_airport_arrivals(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_arrivals(url)
+
+    def get_airport_departures(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_departures(url)
+
+    def get_airport_onground(self,iata,page=1,limit=100):
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        return self.fr24.get_airport_onground(url)
+
+
     #Route and range related information from gcmap
     def get_range_map(self,airport,*range,**options):
         pass

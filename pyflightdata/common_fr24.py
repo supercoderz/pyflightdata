@@ -38,6 +38,24 @@ class FR24(ProcessorMixin):
             return data[0] or []
         return []
 
+    def get_airport_arrivals(self,url):
+        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.arrivals.data')
+        if data:
+            return data[0] or []
+        return []
+
+    def get_airport_departures(self,url):
+        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.departures.data')
+        if data:
+            return data[0] or []
+        return []
+
+    def get_airport_onground(self,url):
+        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.ground.data')
+        if data:
+            return data[0] or []
+        return []
+
     # Handle all the flights data
 
     def get_raw_flight_data(self,url):
