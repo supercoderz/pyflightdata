@@ -19,6 +19,14 @@ The API does not provide any mass request mechanism and does not recommend such 
 
 Eventually we will add more sites and more information to the API.
 
+Read the Docs
+=============
+
+A simple API doc is hosted on Read the Docs at http://pyflightdata.readthedocs.io/en/latest/
+Please use this to understand the various methods on FlightData class and the parameters.
+
+This will eventually be expanded to be a more proper API doc and replace this readme file.
+
 
 IPython notebook example
 ========================
