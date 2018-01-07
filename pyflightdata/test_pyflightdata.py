@@ -71,3 +71,5 @@ class TestOtherFeatures(object):
     def test_get_airport_onground(self):
         assert f.get_airport_onground('SIN').__len__() >= 0
 
+    def test_not_logged_in(self):
+        assert f.is_authenticated()==False

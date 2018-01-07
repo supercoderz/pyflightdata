@@ -1,10 +1,28 @@
 from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
 from .common import FlightMixin
 
-
 class FlightData(FlightMixin):
+    """FlightData class is the entry point to the API. 
+    
+    This class abstracts the data sources and provides convenient methods to get the various datapoints as JSON lists.
+    At the moment flightradar24 is the only data source.
 
-    fr24=FR24()
+    It is optional to pass in the email and password to login to the site at the time of creating the API object.
+    The login method can be invoked at a later point in the code.
+
+    Args:
+        email (str): optional email ID used to login to flightradar24
+        password (str): password for the user ID
+
+    Example::
+
+        from pyflightdata import FlightData
+        f=FlightData()
+        f.login(myemail,mypassword)
+
+    """
+
+    _fr24=FR24()
 
     def __init__(self, email=None,password=None):
         super(FlightData, self).__init__()
@@ -13,81 +31,339 @@ class FlightData(FlightMixin):
 
     #Flight related information - primarily from flightradar24
     def get_history_by_flight_number(self,flight_number,page=1,limit=100):
+        """Fetch the history of a flight by its number.
+
+        This method can be used to get the history of a flight route by the number.
+        It checks the user authentication and returns the data accordingly.
+
+        Args:
+            flight_number (str): The flight number, e.g. AI101
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_history_by_flight_number('AI101')
+            f.get_history_by_flight_number('AI101',page=1,limit=10)
+
+        """
         url = FLT_BASE.format(flight_number,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_data(url)
+        return self._fr24.get_data(url)
 
     def get_history_by_tail_number(self,tail_number,page=1,limit=100):
+        """Fetch the history of a particular aircraft by its tail number.
+
+        This method can be used to get the history of a particular aircraft by its tail number.
+        It checks the user authentication and returns the data accordingly.
+
+        Args:
+            tail_number (str): The tail number, e.g. VT-ANL
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_history_by_flight_number('VT-ANL')
+            f.get_history_by_flight_number('VT-ANL',page=1,limit=10)
+            
+        """
         url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_data(url, True)
+        return self._fr24.get_data(url, True)
 
     def get_countries(self):
-        return self.fr24.get_countries_data()
+        """Returns a list of all countries
+        This can be used to get the country name/code as it is known on flightradar24
+        """
+        return self._fr24.get_countries_data()
 
     def get_airports(self,country):
+        """Returns a list of all the airports
+        For a given country this returns a list of dicts, one for each airport, with information like the iata code of the airport etc
+
+        Args:
+            country (str): The country for which the airports will be fetched
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            f.get_airports('India')
+
+        """
         url = AIRPORT_BASE.format(country.replace(" ","-"))
-        return self.fr24.get_airports_data(url)
+        return self._fr24.get_airports_data(url)
 
     def get_info_by_tail_number(self,tail_number):
+        """Fetch the details of a particular aircraft by its tail number.
+
+        This method can be used to get the details of a particular aircraft by its tail number.
+        Details include the serial number, age etc along with links to the images of the aircraft.
+        It checks the user authentication and returns the data accordingly.
+
+        Args:
+            tail_number (str): The tail number, e.g. VT-ANL
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_info_by_flight_number('VT-ANL')
+            f.get_info_by_flight_number('VT-ANL',page=1,limit=10)
+        """    
         url = AIRLINE_BASE.format(tail_number)
-        return self.fr24.get_aircraft_data(url)
+        return self._fr24.get_aircraft_data(url)
 
     def get_airlines(self):
+        """Returns a list of all the airlines in the world that are known on flightradar24
+
+        The return value is a list of dicts, one for each airline, with details like the airline code on flightradar24, call sign, codes etc.
+        The airline code can be used to get the fleet and the flights from flightradar24
+
+        """
         url = AIRLINE_BASE.format('')
-        return self.fr24.get_airlines_data(url)
+        return self._fr24.get_airlines_data(url)
 
     def get_fleet(self,airline_key):
+        """Get the fleet for a particular airline.
+
+        Given a airline code form the get_airlines() method output, this method returns the fleet for the airline.
+
+        Args:
+            airline_key (str): The code for the airline on flightradar24
+
+        Returns:
+            A list of dicts, one for each aircraft in the airlines fleet
+
+        Example::
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_fleet('ai-aic')
+        """
         url = AIRLINE_BASE.format(airline_key)
-        return self.fr24.get_airline_fleet_data(url)
+        return self._fr24.get_airline_fleet_data(url)
 
     def get_flights(self,airline_key):
+        """Get the flights for a particular airline.
+
+        Given a airline code form the get_airlines() method output, this method returns the scheduled flights for the airline.
+
+        Args:
+            airline_key (str): The code for the airline on flightradar24
+
+        Returns:
+            A list of dicts, one for each scheduled flight in the airlines network
+
+        Example::
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_flights('ai-aic')
+        """
         url = AIRLINE_FLT_BASE.format(airline_key)
-        return self.fr24.get_airline_flight_data(url)
+        return self._fr24.get_airline_flight_data(url)
 
     def get_airport_weather(self,iata,page=1,limit=100):
+        """Retrieve the weather at an airport
+
+        Given the IATA code of an airport, this method returns the weather information.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_weather('HYD')
+            f.get_airport_weather('HYD',page=1,limit=10)
+            
+        """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_weather(url)
+        return self._fr24.get_airport_weather(url)
 
     def get_airport_stats(self,iata,page=1,limit=100):
+        """Retrieve the performance statistics at an airport
+
+        Given the IATA code of an airport, this method returns the performance statistics for the airport.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_stats('HYD')
+            f.get_airport_stats('HYD',page=1,limit=10)
+            
+        """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_stats(url)
+        return self._fr24.get_airport_stats(url)
 
     def get_airport_details(self,iata,page=1,limit=100):
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_details(url)
+        return self._fr24.get_airport_details(url)
 
     def get_airport_reviews(self,iata,page=1,limit=100):
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_reviews(url)
+        return self._fr24.get_airport_reviews(url)
 
     def get_airport_arrivals(self,iata,page=1,limit=100):
+        """Retrieve the arrivals at an airport
+
+        Given the IATA code of an airport, this method returns the arrivals information.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_arrivals('HYD')
+            f.get_airport_arrivals('HYD',page=1,limit=10)
+            
+        """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_arrivals(url)
+        return self._fr24.get_airport_arrivals(url)
 
     def get_airport_departures(self,iata,page=1,limit=100):
+        """Retrieve the departures at an airport
+
+        Given the IATA code of an airport, this method returns the departures information.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_departures('HYD')
+            f.get_airport_departures('HYD',page=1,limit=10)
+            
+        """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_departures(url)
+        return self._fr24.get_airport_departures(url)
 
     def get_airport_onground(self,iata,page=1,limit=100):
+        """Retrieve the aircraft on ground at an airport
+
+        Given the IATA code of an airport, this method returns the aircraft on the ground at the airport.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_onground('HYD')
+            f.get_airport_onground('HYD',page=1,limit=10)
+            
+        """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self.fr24.get_airport_onground(url)
+        return self._fr24.get_airport_onground(url)
 
 
     #Route and range related information from gcmap
     def get_range_map(self,airport,*range,**options):
+        """Not implemented
+        """
         pass
         
     def get_path_map(self,*pathsegment,**options):
+        """Not implemented
+        """
         pass
 
     #Pictures from jetphotos and airliners.net
     def get_images_by_tail(self,tail_number):
+        """Not implemented
+        """
         pass
         
-    def login(self,user,password):
+    def login(self,email,password):
+        """Login to the flightradar24 session
+
+        The API currently uses flightradar24 as the primary data source. The site provides different levels of data based on user plans.
+        For users who have signed up for a plan, this method allows to login with the credentials from flightradar24. The API obtains
+        a token that will be passed on all the requests; this obtains the data as per the plan limits.
+
+        Args:
+            email (str): The email ID which is used to login to flightradar24
+            password (str): The password for the user ID
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            f.login(myemail,mypassword)
+
+        """
         response = FlightData.session.post(
             url=LOGIN_URL,
             data={
-                'email': user,
+                'email': email,
                 'password': password,
                 'remember': 'true',
                 'type': 'web'
@@ -98,10 +374,18 @@ class FlightData(FlightMixin):
                 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0'
             }
         )
-        response = self.fr24.json_loads_byteified(response.content) if response.status_code==200 else None
+        response = self._fr24.json_loads_byteified(response.content) if response.status_code==200 else None
         if response:
             token=response['userData']['subscriptionKey']
             self.AUTH_TOKEN=token
 
     def logout(self):
+        """Logout from the flightradar24 session.
+
+        This will reset the user token that was retrieved earlier; the API will return data visible to unauthenticated users
+        """
         self.AUTH_TOKEN=''
+
+    def is_authenticated(self):
+        """Simple method to check if the user is authenticated to flightradar24"""
+        return self.AUTH_TOKEN<>''
