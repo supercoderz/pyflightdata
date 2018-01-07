@@ -1,4 +1,5 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE, AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
+from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE
+from .common_fr24 import AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
 from .common import FlightMixin
 
 class FlightData(FlightMixin):

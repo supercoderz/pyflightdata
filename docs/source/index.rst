@@ -11,6 +11,8 @@ Eventually this page will be enhanced and serve as the main documentation.
    :caption: Contents
 
    pyflightdata <pyflightdata>
+   Jupyter Notebook Example <http://nbviewer.jupyter.org/github/supercoderz/pyflightdata/blob/master/pyflightdata%20examples.ipynb>
+
 
 
 
