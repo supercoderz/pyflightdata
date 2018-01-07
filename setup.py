@@ -7,7 +7,7 @@ setup(
     version='0.5.5',
     description='Get flight data from websites by making HTTP calls',
     long_description='Please visit https://github.com/supercoderz/pyflightdata for more details',
-    author='Narahari Allamraju',
+    author='Hari Allamraju',
     author_email='anarahari@gmail.com',
     url='https://github.com/supercoderz/pyflightdata',
     packages=['pyflightdata'],
