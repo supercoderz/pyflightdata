@@ -7,7 +7,9 @@ Please refer to that here - https://github.com/supercoderz/pyflightdata/blob/mas
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
+
+   pyflightdata <pyflightdata>
 
 
 
