@@ -51,13 +51,26 @@ class TestOtherFeatures(object):
         assert f.get_flights('air-india-aic').__len__() >= 0
 
     def test_get_airport_weather(self):
-        assert f.get_airport_weather('SIN').__len__() >= 0
+        d=f.get_airport_weather('SIN')
+        assert d.__len__() >= 0
+        if d['sky']['visibility']['mi']!='None':
+            assert (d['sky']['visibility']['km'] == d['sky']['visibility']['mi']*1.6094)
+
+    def test_get_airport_metar_parsed(self):
+        assert f.get_airport_metar_parsed('SIN') is not None
+    
+    def test_get_airport_metar(self):
+        assert f.get_airport_metar('SIN') is not None
 
     def test_get_airport_stats(self):
         assert f.get_airport_stats('SIN').__len__() >= 0
 
     def test_get_airport_details(self):
-        assert f.get_airport_details('SIN').__len__() >= 0
+        d=f.get_airport_details('SIN')
+        assert d.__len__() >= 0
+        assert type(d['position']['elevation'])==dict
+        assert d['position']['elevation']['ft']!=None
+        assert d['position']['elevation']['m']!=None
 
     def test_get_airport_reviews(self):
         assert f.get_airport_reviews('SIN').__len__() >= 0

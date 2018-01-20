@@ -1,6 +1,7 @@
 from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE
 from .common_fr24 import AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
 from .common import FlightMixin
+from metar import Metar
 
 class FlightData(FlightMixin):
     """FlightData class is the entry point to the API. 
@@ -211,7 +212,66 @@ class FlightData(FlightMixin):
             
         """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self._fr24.get_airport_weather(url)
+        weather= self._fr24.get_airport_weather(url)
+        mi=weather['sky']['visibility']['mi']
+        if (mi is not None) and (mi!="None"):
+            mi=float(mi)
+            km=mi*1.6094
+            weather['sky']['visibility']['km']=km
+        return weather
+
+    def get_airport_metar_parsed(self,iata,page=1,limit=100):
+        """Retrieve the metar data at an airport in readable format
+
+        Given the IATA code of an airport, this method returns the metar information in readable format.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A string representing the metar data for the airport
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_metar_parsed('HYD')
+            
+        """
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        w= self._fr24.get_airport_weather(url)
+        m=Metar.Metar(w['metar'])
+        return m.string()
+        
+    def get_airport_metar(self,iata,page=1,limit=100):
+        """Retrieve the metar data at the current time
+
+        Given the IATA code of an airport, this method returns the metar information.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            The metar data for the airport
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_metar('HYD')
+            
+        """
+        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        w= self._fr24.get_airport_weather(url)
+        return w['metar']
 
     def get_airport_stats(self,iata,page=1,limit=100):
         """Retrieve the performance statistics at an airport
@@ -263,7 +323,11 @@ class FlightData(FlightMixin):
             
         """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        return self._fr24.get_airport_details(url)
+        details= self._fr24.get_airport_details(url)
+        weather=self._fr24.get_airport_weather(url)
+        #weather has more correct and standard elevation details in feet and meters
+        details['position']['elevation']=weather['elevation']
+        return details
 
     def get_airport_reviews(self,iata,page=1,limit=100):
         """Retrieve the passenger reviews of an airport
