@@ -56,9 +56,6 @@ class TestOtherFeatures(object):
         if d['sky']['visibility']['mi']!='None':
             assert (d['sky']['visibility']['km'] == d['sky']['visibility']['mi']*1.6094)
 
-    def test_get_airport_metars_parsed(self):
-        assert f.get_airport_metars_parsed('SIN') is not None
-    
     def test_get_airport_metars(self):
         assert f.get_airport_metars('SIN') is not None
 
