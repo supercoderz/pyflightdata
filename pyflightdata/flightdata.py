@@ -220,7 +220,7 @@ class FlightData(FlightMixin):
             weather['sky']['visibility']['km']=km
         return weather
 
-    def get_airport_metar_parsed(self,iata,page=1,limit=100):
+    def get_airport_metars_parsed(self,iata,page=1,limit=100):
         """Retrieve the metar data at an airport in readable format
 
         Given the IATA code of an airport, this method returns the metar information in readable format.
@@ -239,15 +239,14 @@ class FlightData(FlightMixin):
             f=FlightData()
             #optional login
             f.login(myemail,mypassword)
-            f.get_airport_metar_parsed('HYD')
+            f.get_airport_metars_parsed('HYD')
             
         """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
         w= self._fr24.get_airport_weather(url)
-        m=Metar.Metar(w['metar'])
-        return m.string()
+        return self.decode_metar(w['metar'])
         
-    def get_airport_metar(self,iata,page=1,limit=100):
+    def get_airport_metars(self,iata,page=1,limit=100):
         """Retrieve the metar data at the current time
 
         Given the IATA code of an airport, this method returns the metar information.
@@ -266,12 +265,35 @@ class FlightData(FlightMixin):
             f=FlightData()
             #optional login
             f.login(myemail,mypassword)
-            f.get_airport_metar('HYD')
+            f.get_airport_metars('HYD')
             
         """
         url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
         w= self._fr24.get_airport_weather(url)
         return w['metar']
+
+    def get_airport_metars_hist(self,iata):
+        """Retrieve the metar data for past 72 hours. The data will not be parsed to readable format.
+
+        Given the IATA code of an airport, this method returns the metar information for last 72 hours.
+
+        Args:
+            iata (str): The IATA code for an airport, e.g. HYD
+
+        Returns:
+            The metar data for the airport
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_airport_metars_hist('HYD')
+            
+        """
+        url = AIRPORT_BASE.format(iata)+"/weather"
+        return self._fr24.get_airport_metars_hist(url)
 
     def get_airport_stats(self,iata,page=1,limit=100):
         """Retrieve the performance statistics at an airport
@@ -498,3 +520,22 @@ class FlightData(FlightMixin):
     def is_authenticated(self):
         """Simple method to check if the user is authenticated to flightradar24"""
         return not self.AUTH_TOKEN==''
+
+    def decode_metar(self,metar):
+        """
+        Simple method that decodes a given metar string.
+        
+        Args:
+            metar (str): The metar data
+
+        Returns:
+            The metar data in readable format
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            f.decode_metar('WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG')
+        """
+        m=Metar.Metar(metar)
+        return m.string()

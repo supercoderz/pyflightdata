@@ -167,3 +167,15 @@ class TestCommonFR24(object):
         data = self.fr24.get_airport_onground(AIRPORT_DATA_BASE.format('SIN',FlightData.AUTH_TOKEN,1,100))
         assert data.__len__() >= 0
 
+    def test_get_raw_metars_hist(self):
+        data = self.fr24.get_raw_metars_hist(AIRPORT_BASE.format('SIN')+"/weather")
+        assert data.__len__() > 0
+
+    def test_process_raw_metars_hist(self):
+        data = self.fr24.get_raw_metars_hist(AIRPORT_BASE.format('SIN')+"/weather")
+        data = self.fr24.process_raw_metars_hist(data)
+        assert data.__len__()>0
+
+    def test_get_airport_metars_hist(self):
+        data = self.fr24.get_airport_metars_hist(AIRPORT_BASE.format('SIN')+"/weather")
+        assert data.__len__()>0

@@ -52,6 +52,24 @@ class FR24(ProcessorMixin):
         data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.ground.data')
         return self.filter_and_get_data(data) or []
 
+    def get_airport_metars_hist(self,url):
+        data = self.get_raw_metars_hist(url)
+        data = self.process_raw_metars_hist(data)
+        return data
+    
+    def get_raw_metars_hist(self,url):
+        return self.get_raw_data_class_all(url,'master expandable')
+
+    def process_raw_metars_hist(self,data):
+        result = {}
+        for d in data:
+            cells = d.find_all('td')
+            if cells:
+                time=self.encode_and_get(cells[1].text.strip())
+                metar=self.encode_and_get(cells[0].text.strip())
+                result[time]=metar
+        return result
+
     # Handle all the flights data
 
     def get_raw_flight_data(self,url):

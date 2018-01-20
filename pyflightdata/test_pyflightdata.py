@@ -56,12 +56,15 @@ class TestOtherFeatures(object):
         if d['sky']['visibility']['mi']!='None':
             assert (d['sky']['visibility']['km'] == d['sky']['visibility']['mi']*1.6094)
 
-    def test_get_airport_metar_parsed(self):
-        assert f.get_airport_metar_parsed('SIN') is not None
+    def test_get_airport_metars_parsed(self):
+        assert f.get_airport_metars_parsed('SIN') is not None
     
-    def test_get_airport_metar(self):
-        assert f.get_airport_metar('SIN') is not None
+    def test_get_airport_metars(self):
+        assert f.get_airport_metars('SIN') is not None
 
+    def test_get_airport_metars_hist(self):
+        assert f.get_airport_metars_hist('SIN').__len__()>0
+    
     def test_get_airport_stats(self):
         assert f.get_airport_stats('SIN').__len__() >= 0
 
@@ -86,3 +89,6 @@ class TestOtherFeatures(object):
 
     def test_not_logged_in(self):
         assert f.is_authenticated()==False
+
+    def test_decode_metar(self):
+        assert f.decode_metar("WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG") is not None
