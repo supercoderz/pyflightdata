@@ -57,42 +57,6 @@ class TestCommonFR24(object):
         result = self.fr24.process_raw_airport_data(data)
         assert result.__len__() >= 0
 
-    def test_get_raw_aircraft_image_data(self):
-        assert self.fr24.get_raw_aircraft_image_data(REG_BASE.format('VT-ALL','',FlightData.AUTH_TOKEN,1,100)).__len__() >= 0
-
-    def test_process_raw_aircraft_image_data(self):
-        data = self.fr24.get_raw_aircraft_image_data(REG_BASE.format('VT-ALL','',FlightData.AUTH_TOKEN,1,100))
-        assert data.__len__() >= 0
-        result = self.fr24.process_raw_aircraft_image_data(data)
-        assert result.__len__() >= 0
-
-    def test_get_raw_aircraft_image_data_dummy(self):
-        assert self.fr24.get_raw_aircraft_image_data(REG_BASE.format('VT-A','',FlightData.AUTH_TOKEN,1,100)).__len__() == 0
-
-    def test_process_raw_aircraft_image_data_dummy(self):
-        data = self.fr24.get_raw_aircraft_image_data(REG_BASE.format('VT-A','',FlightData.AUTH_TOKEN,1,100))
-        assert data.__len__() == 0
-        result = self.fr24.process_raw_aircraft_image_data(data)
-        assert result.__len__() == 0
-
-    def test_get_raw_aircraft_info_data(self):
-        assert self.fr24.get_raw_aircraft_info_data(REG_BASE.format('VT-ALL','',FlightData.AUTH_TOKEN,1,100)).__len__() >= 0
-
-    def test_process_raw_aircraft_info_data(self):
-        data = self.fr24.get_raw_aircraft_info_data(REG_BASE.format('VT-ALL','',FlightData.AUTH_TOKEN,1,100))
-        assert data.__len__() >= 0
-        result = self.fr24.process_raw_aircraft_info_data(data)
-        assert result.__len__() >= 0
-
-    def test_get_raw_aircraft_info_data_dummy(self):
-        assert self.fr24.get_raw_aircraft_info_data(REG_BASE.format('VT-A','',FlightData.AUTH_TOKEN,1,100)).__len__() == 0
-
-    def test_process_raw_aircraft_info_data_dummy(self):
-        data = self.fr24.get_raw_aircraft_info_data(REG_BASE.format('VT-A','',FlightData.AUTH_TOKEN,1,100))
-        assert data.__len__() == 0
-        result = self.fr24.process_raw_aircraft_info_data(data)
-        assert result.__len__() == 0
-
     def test_get_aircraft_data(self):
         assert self.fr24.get_aircraft_data(REG_BASE.format('VT-ALL','',FlightData.AUTH_TOKEN,1,100)).__len__() >= 0
 

@@ -14,7 +14,7 @@ LOGIN_URL='https://www.flightradar24.com/user/login'
 
 class FR24(ProcessorMixin):
 
-    FILTER_JSON_KEYS=['hex','images','id','logo','row','icon']
+    FILTER_JSON_KEYS=['hex','id','logo','row','icon']
 
     #airport stats
 
@@ -150,48 +150,12 @@ class FR24(ProcessorMixin):
 
     # handle aircraft information
     def get_aircraft_data(self,url):
-        info_data = self.get_raw_aircraft_info_data(url)
-        return self.process_raw_aircraft_info_data(info_data)
+        data = self.get_raw_data_json(url, 'result.response.aircraftInfo')
+        return self.filter_and_get_data(data) or []
 
-    def get_raw_aircraft_image_data(self,key):
-        return self.get_raw_data_json(IMAGE_BASE.format(key), 'thumbnails') or []
-
-
-    def get_raw_aircraft_info_data(self,url):
-        return self.get_raw_data_class_all(url, 'row h-30 p-l-20 p-t-5') or []
-
-
-    def process_raw_aircraft_image_data(self,data):
-        result = []
-        for item in data:
-            values = item.values()
-            for entry in values:
-                result.append(entry['src'])
-        return result
-
-
-    def process_raw_aircraft_info_data(self,data):
-        result = []
-        record = {}
-        for item in data:
-            label = item.find('label')
-            if label:
-                key = self.encode_and_get(label.text.strip().lower())
-                if '\\' in key:
-                    key = key[0:key.index('\\')]
-                key = key.replace(' (msn)','')
-                key = key.replace(' ','-')
-                span = item.find('span')
-                if span:
-                    value = self.encode_and_get(span.text.strip().lower())
-                    record[key] = value
-        if 'mode-s' in record.keys():
-            img_data = self.get_raw_aircraft_image_data(record['mode-s'])
-            images = self.process_raw_aircraft_image_data(img_data)
-            record['images'] = images
-        if len(record)>0:
-            result.append(record)
-        return result
+    def get_aircraft_image_data(self,url):
+        data = self.get_raw_data_json(url, 'result.response.aircraftImages')
+        return self.filter_and_get_data(data) or []
 
     # Handle getting all the airlines
 

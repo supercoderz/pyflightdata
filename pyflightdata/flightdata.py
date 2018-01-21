@@ -109,7 +109,7 @@ class FlightData(FlightMixin):
         url = AIRPORT_BASE.format(country.replace(" ","-"))
         return self._fr24.get_airports_data(url)
 
-    def get_info_by_tail_number(self,tail_number):
+    def get_info_by_tail_number(self,tail_number,page=1,limit=100):
         """Fetch the details of a particular aircraft by its tail number.
 
         This method can be used to get the details of a particular aircraft by its tail number.
@@ -133,7 +133,7 @@ class FlightData(FlightMixin):
             f.get_info_by_flight_number('VT-ANL')
             f.get_info_by_flight_number('VT-ANL',page=1,limit=10)
         """    
-        url = AIRLINE_BASE.format(tail_number)
+        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
         return self._fr24.get_aircraft_data(url)
 
     def get_airlines(self):
@@ -430,22 +430,30 @@ class FlightData(FlightMixin):
         return self._fr24.get_airport_onground(url)
 
 
-    #Route and range related information from gcmap
-    def get_range_map(self,airport,*range,**options):
-        """Not implemented
-        """
-        pass
-        
-    def get_path_map(self,*pathsegment,**options):
-        """Not implemented
-        """
-        pass
+    def get_images_by_tail_number(self,tail_number,page=1,limit=100):
+        """Fetch the images of a particular aircraft by its tail number.
 
-    #Pictures from jetphotos and airliners.net
-    def get_images_by_tail(self,tail_number):
-        """Not implemented
+        This method can be used to get the images of the aircraft. The images are in 3 sizes and you can use what suits your need.
+
+        Args:
+            tail_number (str): The tail number, e.g. VT-ANL
+            page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+            limit (int): Optional limit on number of records returned
+
+        Returns:
+            A dict with the images of the aircraft in various sizes
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_images_by_flight_number('VT-ANL')
+            f.get_images_by_flight_number('VT-ANL',page=1,limit=10)
         """
-        pass
+        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
+        return self._fr24.get_aircraft_image_data(url)
         
     def login(self,email,password):
         """Login to the flightradar24 session

@@ -32,6 +32,10 @@ class TestGetByTailNumber(object):
         result = f.get_info_by_tail_number('VT-ALL')
         assert result.__len__() > 0
 
+    def test_aircraft_images(self):
+        result = f.get_images_by_tail_number('VT-ALL')
+        assert result.__len__() > 0
+
 @flaky(max_runs=5,rerun_filter=delay_rerun)
 class TestOtherFeatures(object):
 
