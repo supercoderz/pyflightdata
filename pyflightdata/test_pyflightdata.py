@@ -2,13 +2,16 @@ from flaky import flaky
 import time
 from .flightdata import FlightData
 
+
 def delay_rerun(*args):
     time.sleep(5)
     return True
 
-f=FlightData()
 
-@flaky(max_runs=5,rerun_filter=delay_rerun)
+f = FlightData()
+
+
+@flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestGetByFlightNumber(object):
 
     def test_simple_get(self):
@@ -18,7 +21,8 @@ class TestGetByFlightNumber(object):
         result = f.get_history_by_flight_number('AI101')
         assert result.__len__() > 0
 
-@flaky(max_runs=5,rerun_filter=delay_rerun)
+
+@flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestGetByTailNumber(object):
 
     def test_simple_get(self):
@@ -36,7 +40,8 @@ class TestGetByTailNumber(object):
         result = f.get_images_by_tail_number('VT-ALL')
         assert result.__len__() > 0
 
-@flaky(max_runs=5,rerun_filter=delay_rerun)
+
+@flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestOtherFeatures(object):
 
     def test_get_countries(self):
@@ -55,26 +60,27 @@ class TestOtherFeatures(object):
         assert f.get_flights('air-india-aic').__len__() >= 0
 
     def test_get_airport_weather(self):
-        d=f.get_airport_weather('SIN')
+        d = f.get_airport_weather('SIN')
         assert d.__len__() >= 0
-        if d['sky']['visibility']['mi']!='None':
-            assert (d['sky']['visibility']['km'] == d['sky']['visibility']['mi']*1.6094)
+        if d['sky']['visibility']['mi'] != 'None':
+            assert (d['sky']['visibility']['km'] ==
+                    d['sky']['visibility']['mi'] * 1.6094)
 
     def test_get_airport_metars(self):
         assert f.get_airport_metars('SIN') is not None
 
     def test_get_airport_metars_hist(self):
-        assert f.get_airport_metars_hist('SIN').__len__()>0
-    
+        assert f.get_airport_metars_hist('SIN').__len__() > 0
+
     def test_get_airport_stats(self):
         assert f.get_airport_stats('SIN').__len__() >= 0
 
     def test_get_airport_details(self):
-        d=f.get_airport_details('SIN')
+        d = f.get_airport_details('SIN')
         assert d.__len__() >= 0
-        assert type(d['position']['elevation'])==dict
-        assert d['position']['elevation']['ft']!=None
-        assert d['position']['elevation']['m']!=None
+        assert type(d['position']['elevation']) == dict
+        assert d['position']['elevation']['ft'] != None
+        assert d['position']['elevation']['m'] != None
 
     def test_get_airport_reviews(self):
         assert f.get_airport_reviews('SIN').__len__() >= 0
@@ -89,7 +95,8 @@ class TestOtherFeatures(object):
         assert f.get_airport_onground('SIN').__len__() >= 0
 
     def test_not_logged_in(self):
-        assert f.is_authenticated()==False
+        assert f.is_authenticated() == False
 
     def test_decode_metar(self):
-        assert f.decode_metar("WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG") is not None
+        assert f.decode_metar(
+            "WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG") is not None

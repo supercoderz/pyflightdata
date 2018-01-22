@@ -9,103 +9,107 @@ AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={
 AIRLINE_BASE = 'https://www.flightradar24.com/data/aircraft/{0}'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
 IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
-LOGIN_URL='https://www.flightradar24.com/user/login'
+LOGIN_URL = 'https://www.flightradar24.com/user/login'
 
 
 class FR24(ProcessorMixin):
 
-    FILTER_JSON_KEYS=['hex','id','logo','row','icon']
+    FILTER_JSON_KEYS = ['hex', 'id', 'logo', 'row', 'icon']
 
-    #airport stats
+    # airport stats
 
-    def filter_and_get_data(self,data):
+    def filter_and_get_data(self, data):
         if data:
-            res=data[0] or []
-            return fltr(res,self.FILTER_JSON_KEYS)
+            res = data[0] or []
+            return fltr(res, self.FILTER_JSON_KEYS)
         return []
-        
-    def get_airport_weather(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.weather')
+
+    def get_airport_weather(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.weather')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_stats(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.details.stats')
+    def get_airport_stats(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.details.stats')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_details(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.details')
+    def get_airport_details(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.details')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_reviews(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.flightdiary')
+    def get_airport_reviews(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.flightdiary')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_arrivals(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.arrivals.data')
+    def get_airport_arrivals(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.schedule.arrivals.data')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_departures(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.departures.data')
+    def get_airport_departures(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.schedule.departures.data')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_onground(self,url):
-        data = self.get_raw_data_json(url, 'result.response.airport.pluginData.schedule.ground.data')
+    def get_airport_onground(self, url):
+        data = self.get_raw_data_json(
+            url, 'result.response.airport.pluginData.schedule.ground.data')
         return self.filter_and_get_data(data) or []
 
-    def get_airport_metars_hist(self,url):
+    def get_airport_metars_hist(self, url):
         data = self.get_raw_metars_hist(url)
         data = self.process_raw_metars_hist(data)
         return data
-    
-    def get_raw_metars_hist(self,url):
-        return self.get_raw_data_class_all(url,'master expandable')
 
-    def process_raw_metars_hist(self,data):
+    def get_raw_metars_hist(self, url):
+        return self.get_raw_data_class_all(url, 'master expandable')
+
+    def process_raw_metars_hist(self, data):
         result = {}
         for d in data:
             cells = d.find_all('td')
             if cells:
-                time=self.encode_and_get(cells[1].text.strip())
-                metar=self.encode_and_get(cells[0].text.strip())
-                result[time]=metar
+                time = self.encode_and_get(cells[1].text.strip())
+                metar = self.encode_and_get(cells[0].text.strip())
+                result[time] = metar
         return result
 
     # Handle all the flights data
 
-    def get_raw_flight_data(self,url):
+    def get_raw_flight_data(self, url):
         data = self.get_raw_data_json(url, 'result.response.data')
         return self.filter_and_get_data(data) or []
 
-    def process_raw_flight_data(self,data, by_tail=False):
-        #TODO check later if we need to parse this data - for now return full set
+    def process_raw_flight_data(self, data, by_tail=False):
+        # TODO check later if we need to parse this data - for now return full set
         return data
 
-
-    def get_data(self,url, by_tail=False):
+    def get_data(self, url, by_tail=False):
         data = self.get_raw_flight_data(url)
         return self.process_raw_flight_data(data, by_tail)
 
     # Handle getting countries
 
-
     def get_raw_country_data(self):
-        return self.get_raw_data(AIRPORT_BASE.format(''), 'tbl-datatable', 'tbody','tr') or []
+        return self.get_raw_data(AIRPORT_BASE.format(''), 'tbl-datatable', 'tbody', 'tr') or []
 
-
-    def process_raw_country_data(self,data):
+    def process_raw_country_data(self, data):
         result = []
         for entry in data:
             cells = entry.find_all('td')
             if cells:
-                #this will break one day
+                # this will break one day
                 for cell in cells[1:2]:
                     link = cell.find('a')
                     if link:
                         if 'data-country' in link.attrs:
-                            record={}
+                            record = {}
                             for attr in link.attrs:
-                                if attr not in ['href','class','onclick','title']:
-                                    attr_new = attr.replace('data-','')
+                                if attr not in ['href', 'class', 'onclick', 'title']:
+                                    attr_new = attr.replace('data-', '')
                                     record[attr_new] = link[attr]
                             images = link.find_all('img')
                             if images:
@@ -114,17 +118,15 @@ class FR24(ProcessorMixin):
                             result.append(record)
         return result
 
-
     def get_countries_data(self):
         data = self.get_raw_country_data()
         return self.process_raw_country_data(data)
 
     # Handle getting the airports in a country
-    def get_raw_airport_data(self,url):
-        return self.get_raw_data(url, 'tbl-datatable', 'tbody','tr') or []
+    def get_raw_airport_data(self, url):
+        return self.get_raw_data(url, 'tbl-datatable', 'tbody', 'tr') or []
 
-
-    def process_raw_airport_data(self,data):
+    def process_raw_airport_data(self, data):
         result = []
         for entry in data:
             cells = entry.find_all('td')
@@ -133,38 +135,35 @@ class FR24(ProcessorMixin):
                     link = cell.find('a')
                     if link:
                         if 'data-iata' in link.attrs:
-                            record={}
+                            record = {}
                             for attr in link.attrs:
-                                if attr not in ['href','class','onclick']:
-                                    attr_new = attr.replace('data-','')
+                                if attr not in ['href', 'class', 'onclick']:
+                                    attr_new = attr.replace('data-', '')
                                     if attr_new == 'title':
                                         attr_new = 'name'
                                     record[attr_new] = link[attr]
                             result.append(record)
         return result
 
-
-    def get_airports_data(self,url):
+    def get_airports_data(self, url):
         data = self.get_raw_airport_data(url)
         return self.process_raw_airport_data(data)
 
     # handle aircraft information
-    def get_aircraft_data(self,url):
+    def get_aircraft_data(self, url):
         data = self.get_raw_data_json(url, 'result.response.aircraftInfo')
         return self.filter_and_get_data(data) or []
 
-    def get_aircraft_image_data(self,url):
+    def get_aircraft_image_data(self, url):
         data = self.get_raw_data_json(url, 'result.response.aircraftImages')
         return self.filter_and_get_data(data) or []
 
     # Handle getting all the airlines
 
-
-    def get_raw_airlines_data(self,url):
+    def get_raw_airlines_data(self, url):
         return self.get_raw_data(url, 'tbl-datatable', 'tbody', 'tr') or []
 
-
-    def process_raw_airlines_data(self,data):
+    def process_raw_airlines_data(self, data):
         result = []
         for entry in data:
             record = {}
@@ -175,8 +174,8 @@ class FR24(ProcessorMixin):
                     if link:
                         if 'data-country' in link.attrs:
                             for attr in link.attrs:
-                                if attr not in ['href','class','onclick','target','data-country']:
-                                    attr_new = attr.replace('data-','')
+                                if attr not in ['href', 'class', 'onclick', 'target', 'data-country']:
+                                    attr_new = attr.replace('data-', '')
                                     record[attr_new] = link[attr]
                             href = link['href']
                             if href:
@@ -195,29 +194,27 @@ class FR24(ProcessorMixin):
                                 record['fleet-size'] = value
                             else:
                                 record['callsign'] = value
-            if len(record)>0:
+            if len(record) > 0:
                 result.append(record)
         return result
 
-
-    def get_airlines_data(self,url):
+    def get_airlines_data(self, url):
         data = self.get_raw_airlines_data(url)
         return self.process_raw_airlines_data(data)
 
     # Handle getting the fleet
 
+    def get_raw_airline_fleet_data(self, url):
+        slide = self.get_raw_data_class(url, 'horizontal-slide')
+        return slide.find_all('li', class_='parent') if slide else []
 
-    def get_raw_airline_fleet_data(self,url):
-        slide =  self.get_raw_data_class(url, 'horizontal-slide')
-        return slide.find_all('li',class_='parent') if slide else []
-
-    def process_raw_airline_fleet_data(self,data):
+    def process_raw_airline_fleet_data(self, data):
         result = []
         for parent in data:
             record = {}
             div = parent.find('div')
             if div:
-                #yeah this sucks
+                # yeah this sucks
                 div = div.find('div')
                 if div:
                     atype = self.encode_and_get(div.text.strip())
@@ -226,7 +223,8 @@ class FR24(ProcessorMixin):
                     record['aircraft-type'] = atype
                     span = div.find('span')
                     if span:
-                        record['count']=self.encode_and_get(span.text.strip())
+                        record['count'] = self.encode_and_get(
+                            span.text.strip())
             ul = parent.find('ul')
             if ul:
                 regs = ul.find_all('li')
@@ -235,40 +233,39 @@ class FR24(ProcessorMixin):
                     for reg in regs:
                         link = reg.find('a')
                         if link:
-                            reg_list.append(self.encode_and_get(link.text.strip()))
+                            reg_list.append(
+                                self.encode_and_get(link.text.strip()))
                     record['aircraft-regs'] = reg_list
             result.append(record)
         return result
 
-
-    def get_airline_fleet_data(self,url):
+    def get_airline_fleet_data(self, url):
         data = self.get_raw_airline_fleet_data(url)
         return self.process_raw_airline_fleet_data(data)
 
     # Handle getting the all the flights
 
-    def get_raw_airline_flight_data(self,url):
-        return self.get_raw_data(url, 'tbl-datatable', 'tbody','tr') or []
+    def get_raw_airline_flight_data(self, url):
+        return self.get_raw_data(url, 'tbl-datatable', 'tbody', 'tr') or []
 
-
-    def process_raw_airline_flight_data(self,data):
+    def process_raw_airline_flight_data(self, data):
         result = []
         for entry in data:
             cells = entry.find_all('td')
             if cells:
-                if len(cells)>1:
+                if len(cells) > 1:
                     record = {}
                     record['flight'] = self.encode_and_get(cells[1].text)
                     record['from'] = cells[2]['title']
                     record['to'] = cells[3]['title']
-                    record['aircraft-type'] = self.encode_and_get(cells[4].text)
+                    record['aircraft-type'] = self.encode_and_get(
+                        cells[4].text)
                     link = cells[5].find('a')
                     if link:
                         record['aircraft'] = self.encode_and_get(link.text)
                     result.append(record)
         return result
 
-
-    def get_airline_flight_data(self,url):
+    def get_airline_flight_data(self, url):
         data = self.get_raw_airline_flight_data(url)
         return self.process_raw_airline_flight_data(data)

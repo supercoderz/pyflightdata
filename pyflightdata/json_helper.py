@@ -1,6 +1,8 @@
 """
 Filter a json dict to remove given keys
 """
+
+
 def fltr(node, vals):
     if isinstance(node, dict):
         retVal = {}
@@ -13,9 +15,9 @@ def fltr(node, vals):
                 else:
                     retVal[key] = str(node[key])
         if retVal:
-             return retVal
+            return retVal
         else:
-             return None
+            return None
     elif isinstance(node, list):
         retVal = []
         for entry in node:

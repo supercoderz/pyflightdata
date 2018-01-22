@@ -3,9 +3,10 @@ from .common_fr24 import AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
 from .common import FlightMixin
 from metar import Metar
 
+
 class FlightData(FlightMixin):
     """FlightData class is the entry point to the API. 
-    
+
     This class abstracts the data sources and provides convenient methods to get the various datapoints as JSON lists.
     At the moment flightradar24 is the only data source.
 
@@ -24,15 +25,15 @@ class FlightData(FlightMixin):
 
     """
 
-    _fr24=FR24()
+    _fr24 = FR24()
 
-    def __init__(self, email=None,password=None):
+    def __init__(self, email=None, password=None):
         super(FlightData, self).__init__()
         if email and password:
-            self.login(email,password)
+            self.login(email, password)
 
-    #Flight related information - primarily from flightradar24
-    def get_history_by_flight_number(self,flight_number,page=1,limit=100):
+    # Flight related information - primarily from flightradar24
+    def get_history_by_flight_number(self, flight_number, page=1, limit=100):
         """Fetch the history of a flight by its number.
 
         This method can be used to get the history of a flight route by the number.
@@ -56,10 +57,10 @@ class FlightData(FlightMixin):
             f.get_history_by_flight_number('AI101',page=1,limit=10)
 
         """
-        url = FLT_BASE.format(flight_number,str(self.AUTH_TOKEN),page,limit)
+        url = FLT_BASE.format(flight_number, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_data(url)
 
-    def get_history_by_tail_number(self,tail_number,page=1,limit=100):
+    def get_history_by_tail_number(self, tail_number, page=1, limit=100):
         """Fetch the history of a particular aircraft by its tail number.
 
         This method can be used to get the history of a particular aircraft by its tail number.
@@ -81,9 +82,9 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_history_by_flight_number('VT-ANL')
             f.get_history_by_flight_number('VT-ANL',page=1,limit=10)
-            
+
         """
-        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_data(url, True)
 
     def get_countries(self):
@@ -92,7 +93,7 @@ class FlightData(FlightMixin):
         """
         return self._fr24.get_countries_data()
 
-    def get_airports(self,country):
+    def get_airports(self, country):
         """Returns a list of all the airports
         For a given country this returns a list of dicts, one for each airport, with information like the iata code of the airport etc
 
@@ -106,10 +107,10 @@ class FlightData(FlightMixin):
             f.get_airports('India')
 
         """
-        url = AIRPORT_BASE.format(country.replace(" ","-"))
+        url = AIRPORT_BASE.format(country.replace(" ", "-"))
         return self._fr24.get_airports_data(url)
 
-    def get_info_by_tail_number(self,tail_number,page=1,limit=100):
+    def get_info_by_tail_number(self, tail_number, page=1, limit=100):
         """Fetch the details of a particular aircraft by its tail number.
 
         This method can be used to get the details of a particular aircraft by its tail number.
@@ -132,8 +133,8 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_info_by_flight_number('VT-ANL')
             f.get_info_by_flight_number('VT-ANL',page=1,limit=10)
-        """    
-        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
+        """
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_aircraft_data(url)
 
     def get_airlines(self):
@@ -146,7 +147,7 @@ class FlightData(FlightMixin):
         url = AIRLINE_BASE.format('')
         return self._fr24.get_airlines_data(url)
 
-    def get_fleet(self,airline_key):
+    def get_fleet(self, airline_key):
         """Get the fleet for a particular airline.
 
         Given a airline code form the get_airlines() method output, this method returns the fleet for the airline.
@@ -167,7 +168,7 @@ class FlightData(FlightMixin):
         url = AIRLINE_BASE.format(airline_key)
         return self._fr24.get_airline_fleet_data(url)
 
-    def get_flights(self,airline_key):
+    def get_flights(self, airline_key):
         """Get the flights for a particular airline.
 
         Given a airline code form the get_airlines() method output, this method returns the scheduled flights for the airline.
@@ -188,7 +189,7 @@ class FlightData(FlightMixin):
         url = AIRLINE_FLT_BASE.format(airline_key)
         return self._fr24.get_airline_flight_data(url)
 
-    def get_airport_weather(self,iata,page=1,limit=100):
+    def get_airport_weather(self, iata, page=1, limit=100):
         """Retrieve the weather at an airport
 
         Given the IATA code of an airport, this method returns the weather information.
@@ -209,18 +210,18 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_weather('HYD')
             f.get_airport_weather('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        weather= self._fr24.get_airport_weather(url)
-        mi=weather['sky']['visibility']['mi']
-        if (mi is not None) and (mi!="None"):
-            mi=float(mi)
-            km=mi*1.6094
-            weather['sky']['visibility']['km']=km
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        weather = self._fr24.get_airport_weather(url)
+        mi = weather['sky']['visibility']['mi']
+        if (mi is not None) and (mi != "None"):
+            mi = float(mi)
+            km = mi * 1.6094
+            weather['sky']['visibility']['km'] = km
         return weather
 
-    def get_airport_metars(self,iata,page=1,limit=100):
+    def get_airport_metars(self, iata, page=1, limit=100):
         """Retrieve the metar data at the current time
 
         Given the IATA code of an airport, this method returns the metar information.
@@ -240,13 +241,13 @@ class FlightData(FlightMixin):
             #optional login
             f.login(myemail,mypassword)
             f.get_airport_metars('HYD')
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        w= self._fr24.get_airport_weather(url)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        w = self._fr24.get_airport_weather(url)
         return w['metar']
 
-    def get_airport_metars_hist(self,iata):
+    def get_airport_metars_hist(self, iata):
         """Retrieve the metar data for past 72 hours. The data will not be parsed to readable format.
 
         Given the IATA code of an airport, this method returns the metar information for last 72 hours.
@@ -264,12 +265,12 @@ class FlightData(FlightMixin):
             #optional login
             f.login(myemail,mypassword)
             f.get_airport_metars_hist('HYD')
-            
+
         """
-        url = AIRPORT_BASE.format(iata)+"/weather"
+        url = AIRPORT_BASE.format(iata) + "/weather"
         return self._fr24.get_airport_metars_hist(url)
 
-    def get_airport_stats(self,iata,page=1,limit=100):
+    def get_airport_stats(self, iata, page=1, limit=100):
         """Retrieve the performance statistics at an airport
 
         Given the IATA code of an airport, this method returns the performance statistics for the airport.
@@ -290,12 +291,12 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_stats('HYD')
             f.get_airport_stats('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_stats(url)
 
-    def get_airport_details(self,iata,page=1,limit=100):
+    def get_airport_details(self, iata, page=1, limit=100):
         """Retrieve the details of an airport
 
         Given the IATA code of an airport, this method returns the detailed information like lat lon, full name, URL, codes etc.
@@ -316,16 +317,16 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_details('HYD')
             f.get_airport_details('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
-        details= self._fr24.get_airport_details(url)
-        weather=self._fr24.get_airport_weather(url)
-        #weather has more correct and standard elevation details in feet and meters
-        details['position']['elevation']=weather['elevation']
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        details = self._fr24.get_airport_details(url)
+        weather = self._fr24.get_airport_weather(url)
+        # weather has more correct and standard elevation details in feet and meters
+        details['position']['elevation'] = weather['elevation']
         return details
 
-    def get_airport_reviews(self,iata,page=1,limit=100):
+    def get_airport_reviews(self, iata, page=1, limit=100):
         """Retrieve the passenger reviews of an airport
 
         Given the IATA code of an airport, this method returns the passenger reviews of an airport.
@@ -346,12 +347,12 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_reviews('HYD')
             f.get_airport_reviews('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_reviews(url)
 
-    def get_airport_arrivals(self,iata,page=1,limit=100):
+    def get_airport_arrivals(self, iata, page=1, limit=100):
         """Retrieve the arrivals at an airport
 
         Given the IATA code of an airport, this method returns the arrivals information.
@@ -372,12 +373,12 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_arrivals('HYD')
             f.get_airport_arrivals('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_arrivals(url)
 
-    def get_airport_departures(self,iata,page=1,limit=100):
+    def get_airport_departures(self, iata, page=1, limit=100):
         """Retrieve the departures at an airport
 
         Given the IATA code of an airport, this method returns the departures information.
@@ -398,12 +399,12 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_departures('HYD')
             f.get_airport_departures('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_departures(url)
 
-    def get_airport_onground(self,iata,page=1,limit=100):
+    def get_airport_onground(self, iata, page=1, limit=100):
         """Retrieve the aircraft on ground at an airport
 
         Given the IATA code of an airport, this method returns the aircraft on the ground at the airport.
@@ -424,13 +425,12 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_airport_onground('HYD')
             f.get_airport_onground('HYD',page=1,limit=10)
-            
+
         """
-        url = AIRPORT_DATA_BASE.format(iata,str(self.AUTH_TOKEN),page,limit)
+        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_onground(url)
 
-
-    def get_images_by_tail_number(self,tail_number,page=1,limit=100):
+    def get_images_by_tail_number(self, tail_number, page=1, limit=100):
         """Fetch the images of a particular aircraft by its tail number.
 
         This method can be used to get the images of the aircraft. The images are in 3 sizes and you can use what suits your need.
@@ -452,10 +452,10 @@ class FlightData(FlightMixin):
             f.get_images_by_flight_number('VT-ANL')
             f.get_images_by_flight_number('VT-ANL',page=1,limit=10)
         """
-        url = REG_BASE.format(tail_number,str(self.AUTH_TOKEN),page,limit)
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_aircraft_image_data(url)
-        
-    def login(self,email,password):
+
+    def login(self, email, password):
         """Login to the flightradar24 session
 
         The API currently uses flightradar24 as the primary data source. The site provides different levels of data based on user plans.
@@ -482,31 +482,32 @@ class FlightData(FlightMixin):
                 'type': 'web'
             },
             headers={
-                'Origin':'https://www.flightradar24.com',
-                'Referer':'https://www.flightradar24.com',
+                'Origin': 'https://www.flightradar24.com',
+                'Referer': 'https://www.flightradar24.com',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0'
             }
         )
-        response = self._fr24.json_loads_byteified(response.content) if response.status_code==200 else None
+        response = self._fr24.json_loads_byteified(
+            response.content) if response.status_code == 200 else None
         if response:
-            token=response['userData']['subscriptionKey']
-            self.AUTH_TOKEN=token
+            token = response['userData']['subscriptionKey']
+            self.AUTH_TOKEN = token
 
     def logout(self):
         """Logout from the flightradar24 session.
 
         This will reset the user token that was retrieved earlier; the API will return data visible to unauthenticated users
         """
-        self.AUTH_TOKEN=''
+        self.AUTH_TOKEN = ''
 
     def is_authenticated(self):
         """Simple method to check if the user is authenticated to flightradar24"""
-        return not self.AUTH_TOKEN==''
+        return not self.AUTH_TOKEN == ''
 
-    def decode_metar(self,metar):
+    def decode_metar(self, metar):
         """
         Simple method that decodes a given metar string.
-        
+
         Args:
             metar (str): The metar data
 
@@ -519,5 +520,5 @@ class FlightData(FlightMixin):
             f=FlightData()
             f.decode_metar('WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG')
         """
-        m=Metar.Metar(metar)
+        m = Metar.Metar(metar)
         return m.string()
