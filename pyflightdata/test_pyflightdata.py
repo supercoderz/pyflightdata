@@ -1,5 +1,7 @@
-from flaky import flaky
 import time
+
+from flaky import flaky
+
 from .flightdata import FlightData
 
 

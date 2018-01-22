@@ -1,7 +1,9 @@
+import time
+
+from flaky import flaky
+
 from .common_fr24 import *
 from .flightdata import FlightData
-from flaky import flaky
-import time
 
 
 def delay_rerun(*args):

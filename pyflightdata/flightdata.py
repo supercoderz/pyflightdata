@@ -1,7 +1,9 @@
-from .common_fr24 import REG_BASE, FLT_BASE, AIRPORT_BASE, AIRPORT_DATA_BASE
-from .common_fr24 import AIRLINE_BASE, AIRLINE_FLT_BASE, LOGIN_URL, ROOT, FR24
-from .common import FlightMixin
 from metar import Metar
+
+from .common import FlightMixin
+from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
+                          AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
+                          REG_BASE, ROOT)
 
 
 class FlightData(FlightMixin):

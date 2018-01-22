@@ -1,7 +1,8 @@
+import json
+import sys
+
 import requests
 from bs4 import BeautifulSoup
-import sys
-import json
 from jsonpath_rw import parse
 from requests import Session
 

@@ -1,8 +1,10 @@
-from .common import ProcessorMixin
-from .common_fr24 import FLT_BASE, AIRPORT_BASE
-from .flightdata import FlightData
-from flaky import flaky
 import time
+
+from flaky import flaky
+
+from .common import ProcessorMixin
+from .common_fr24 import AIRPORT_BASE, FLT_BASE
+from .flightdata import FlightData
 
 
 def delay_rerun(*args):
