@@ -1,5 +1,3 @@
-from metar import Metar
-
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
@@ -522,5 +520,9 @@ class FlightData(FlightMixin):
             f=FlightData()
             f.decode_metar('WSSS 181030Z 04009KT 010V080 9999 FEW018TCU BKN300 29/22 Q1007 NOSIG')
         """
+        try:
+            from metar import Metar
+        except:
+            return "Unable to parse metars. Please install parser from https://github.com/tomp/python-metar."
         m = Metar.Metar(metar)
         return m.string()

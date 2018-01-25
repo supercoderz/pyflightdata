@@ -10,4 +10,4 @@ twine
 sphinx
 sphinx-autobuild
 sphinx_rtd_theme
--e git+https://github.com/tomp/python-metar.git#egg=metar
+metar
