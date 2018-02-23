@@ -11,6 +11,7 @@ setup(
     author_email='anarahari@gmail.com',
     url='https://github.com/supercoderz/pyflightdata',
     packages=['pyflightdata'],
+    licence='MIT',
     install_requires=[
         'lxml',
         'requests',

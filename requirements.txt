@@ -1,3 +1,4 @@
+jupyter
 requests
 lxml
 beautifulsoup4
