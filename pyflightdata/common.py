@@ -124,7 +124,7 @@ class ProcessorMixin(object):
         if content:
             soup = self.get_soup_or_none(content)
             if soup:
-                return soup.find_all(class_=klass)
+                return soup.find_all(attrs={'class': klass})
 
     def get_raw_data_json(self, url, path):
         content = self.get_page_or_none(url)

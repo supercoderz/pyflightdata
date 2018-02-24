@@ -23,7 +23,7 @@
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
-                          REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS)
+                          REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
 
 
 class FlightData(FlightMixin):
@@ -187,8 +187,8 @@ class FlightData(FlightMixin):
             f.login(myemail,mypassword)
             f.get_fleet('ai-aic')
         """
-        url = AIRLINE_BASE.format(airline_key)
-        return self._fr24.get_airline_fleet_data(url)
+        url = AIRLINE_FLEET_BASE.format(airline_key)
+        return self._fr24.get_airline_fleet_data(url, self.AUTH_TOKEN != '')
 
     def get_flights(self, search_key):
         """Get the flights for a particular airline.

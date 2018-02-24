@@ -29,6 +29,7 @@ FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&f
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/airlines/{0}'
+AIRLINE_FLEET_BASE = 'https://www.flightradar24.com/data/airlines/{0}/fleet'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/v1/search/web/find?query={0}&limit={1}&type=schedule'
 AIRLINE_FLT_BASE_POINTS = 'https://api.flightradar24.com/common/v1/search-mobile-pro.json?query=default&origin={0}&destination={1}'
 IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
@@ -237,49 +238,31 @@ class FR24(ProcessorMixin):
     # Handle getting the fleet
 
     def get_raw_airline_fleet_data(self, url):
-        slide = self.get_raw_data_class(url, 'horizontal-slide')
-        return slide.find_all('li', class_='parent') if slide else []
+        tables = self.get_raw_data_class_all(
+            url, 'table table-condensed table-hover')
+        rows = []
+        for table in tables:
+            rows.extend(table.find('tbody').find_all('tr'))
+        return rows
 
-    def process_raw_airline_fleet_data(self, data):
+    def process_raw_airline_fleet_data(self, data, authenticated):
         result = []
         for parent in data:
             record = {}
-            div = parent.find('div')
-            self.process_aircraft_types(div, record)
-            self.get_fleet_regs(parent, record)
+            cells = parent.find_all('td')
+            record['reg'] = cells[0].find('a').text.strip()
+            record['type'] = cells[1].text.strip()
+            record['msn'] = 'requires user login'
+            record['age'] = 'requires user login'
+            if authenticated:
+                record['msn'] = cells[2].text.strip()
+                record['age'] = cells[3].text.strip()
             result.append(record)
         return result
 
-    def get_fleet_regs(self, parent, record):
-        ul = parent.find('ul')
-        if ul:
-            regs = ul.find_all('li')
-            if regs:
-                reg_list = []
-                for reg in regs:
-                    link = reg.find('a')
-                    if link:
-                        reg_list.append(
-                            self.encode_and_get(link.text.strip()))
-                record['aircraft-regs'] = reg_list
-
-    def process_aircraft_types(self, div, record):
-        if div:
-            # yeah this sucks
-            div = div.find('div')
-            if div:
-                atype = self.encode_and_get(div.text.strip())
-                if '\\t' in atype:
-                    atype = atype[0:atype.index('\\t')]
-                record['aircraft-type'] = atype
-                span = div.find('span')
-                if span:
-                    record['count'] = self.encode_and_get(
-                        span.text.strip())
-
-    def get_airline_fleet_data(self, url):
+    def get_airline_fleet_data(self, url, authenticated):
         data = self.get_raw_airline_fleet_data(url)
-        return self.process_raw_airline_fleet_data(data)
+        return self.process_raw_airline_fleet_data(data, authenticated)
 
     # Handle getting the all the flights
 

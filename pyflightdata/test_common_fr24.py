@@ -105,22 +105,18 @@ class TestCommonFR24(object):
 
     def test_get_airline_fleet_data(self):
         assert self.fr24.get_airline_fleet_data(
-            REG_BASE.format('lufthansa-dlh', '', FlightData.AUTH_TOKEN, 1, 100)).__len__() >= 0
-
-    def test_get_raw_airline_fleet_data(self):
-        assert self.fr24.get_raw_airline_fleet_data(
-            REG_BASE.format('lufthansa-dlh', '', FlightData.AUTH_TOKEN, 1, 100)).__len__() >= 0
+            AIRLINE_FLEET_BASE.format('lufthansa-dlh'),False).__len__() >= 0
 
     def test_process_raw_airline_fleet_data(self):
-        data = self.fr24.get_raw_airline_fleet_data(REG_BASE.format(
-            'lufthansa-dlh', '', FlightData.AUTH_TOKEN, 1, 100))
+        data = self.fr24.get_raw_airline_fleet_data(AIRLINE_FLEET_BASE.format(
+            'lufthansa-dlh'))
         assert data.__len__() >= 0
-        result = self.fr24.process_raw_airline_fleet_data(data)
+        result = self.fr24.process_raw_airline_fleet_data(data, False)
         assert result.__len__() >= 0
 
     def test_get_airline_flight_data(self):
         assert self.fr24.get_airline_flight_data(
-            AIRLINE_FLT_BASE.format('ai1',100)).__len__() >= 0
+            AIRLINE_FLT_BASE.format('ai1', 100)).__len__() >= 0
 
     def test_get_airline_flight_data_points(self):
         assert self.fr24.get_airline_flight_data(
