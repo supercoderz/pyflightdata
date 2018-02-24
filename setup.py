@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 Narahari Allamraju
+# Copyright (c) 2018 Hari Allamraju
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ setup(
         'jsonpath-rw',
         'metar'],
     classifiers=[
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 2.x',
+        'Programming Language :: Python :: 3.x',
     ])
