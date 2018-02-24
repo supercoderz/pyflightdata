@@ -95,8 +95,10 @@ There are methods that you can use to get the list of all the airlines, their fl
 
     api.get_airlines()
 	
-This returns a list of dicts. Each airline dict has a field called 'key' which can be used to get the fleet and flight numbers
+This returns a list of dicts. Each airline dict has a field called 'key' which can be used to get the fleet.
 
     api.get_fleet('air-aic')
 	
-    api.get_flights('ai-aic')
+To get all flights for an airline, provide a search string for the airline flight numbers and get the first 100 flights matching that search string.
+
+    api.get_flights('ai1')

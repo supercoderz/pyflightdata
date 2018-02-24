@@ -23,7 +23,7 @@
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
-                          REG_BASE, ROOT)
+                          REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS)
 
 
 class FlightData(FlightMixin):
@@ -190,13 +190,15 @@ class FlightData(FlightMixin):
         url = AIRLINE_BASE.format(airline_key)
         return self._fr24.get_airline_fleet_data(url)
 
-    def get_flights(self, airline_key):
+    def get_flights(self, search_key):
         """Get the flights for a particular airline.
 
-        Given a airline code form the get_airlines() method output, this method returns the scheduled flights for the airline.
+        Given a full or partial flight number string, this method returns the first 100 flights matching that string.
+
+        Please note this method was different in earlier versions. The older versions took an airline code and returned all scheduled flights for that airline
 
         Args:
-            airline_key (str): The code for the airline on flightradar24
+            search_key (str): Full or partial flight number for any airline e.g. MI47 to get all SilkAir flights starting with MI47
 
         Returns:
             A list of dicts, one for each scheduled flight in the airlines network
@@ -206,10 +208,35 @@ class FlightData(FlightMixin):
             f=FlightData()
             #optional login
             f.login(myemail,mypassword)
-            f.get_flights('ai-aic')
+            f.get_flights('MI47')
         """
-        url = AIRLINE_FLT_BASE.format(airline_key)
+        # assume limit 100 to return first 100 of any wild card search
+        url = AIRLINE_FLT_BASE.format(search_key, 100)
         return self._fr24.get_airline_flight_data(url)
+
+    def get_flights_from_to(self, origin, destination):
+        """Get the flights for a particular origin and destination.
+
+        Given an origin and destination this method returns the upcoming scheduled flights between these two points.
+        The data returned has the airline, airport and schedule information - this is subject to change in future.
+
+        Args:
+            origin (str): The origin airport code
+            destination (str): The destination airport code
+
+        Returns:
+            A list of dicts, one for each scheduled flight between the two points.
+
+        Example::
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_flights_from_to('SIN','HYD')
+        """
+        # assume limit 100 to return first 100 of any wild card search
+        url = AIRLINE_FLT_BASE_POINTS.format(origin, destination)
+        return self._fr24.get_airline_flight_data(url, by_airports=True)
 
     def get_airport_weather(self, iata, page=1, limit=100):
         """Retrieve the weather at an airport

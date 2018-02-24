@@ -81,7 +81,7 @@ class TestOtherFeatures(object):
         assert f.get_fleet('ai-aic').__len__() >= 0
 
     def test_get_flights(self):
-        assert f.get_flights('ai-aic').__len__() >= 0
+        assert f.get_flights('ai1').__len__() >= 0
 
     def test_get_airport_weather(self):
         d = f.get_airport_weather('SIN')

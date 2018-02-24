@@ -29,7 +29,8 @@ FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&f
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/airlines/{0}'
-AIRLINE_FLT_BASE = 'https://www.flightradar24.com/data/flights/{0}'
+AIRLINE_FLT_BASE = 'https://www.flightradar24.com/v1/search/web/find?query={0}&limit={1}&type=schedule'
+AIRLINE_FLT_BASE_POINTS = 'https://api.flightradar24.com/common/v1/search-mobile-pro.json?query=default&origin={0}&destination={1}'
 IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
 LOGIN_URL = 'https://www.flightradar24.com/user/login'
 
@@ -282,26 +283,8 @@ class FR24(ProcessorMixin):
 
     # Handle getting the all the flights
 
-    def get_raw_airline_flight_data(self, url):
-        return self.get_raw_data(url, 'tbl-datatable', 'tbody', 'tr') or []
-
-    def process_raw_airline_flight_data(self, data):
-        result = []
-        for entry in data:
-            cells = entry.find_all('td')
-            if cells and len(cells) > 1:
-                record = {}
-                record['flight'] = self.encode_and_get(cells[1].text)
-                record['from'] = cells[2]['title']
-                record['to'] = cells[3]['title']
-                record['aircraft-type'] = self.encode_and_get(
-                    cells[4].text)
-                link = cells[5].find('a')
-                if link:
-                    record['aircraft'] = self.encode_and_get(link.text)
-                result.append(record)
-        return result
-
-    def get_airline_flight_data(self, url):
-        data = self.get_raw_airline_flight_data(url)
-        return self.process_raw_airline_flight_data(data)
+    def get_airline_flight_data(self, url, by_airports=False):
+        json_key = 'result.response.flight.data' if by_airports else 'results'
+        data = self.get_raw_data_json(
+            url, json_key)
+        return self.filter_and_get_data(data) or []
