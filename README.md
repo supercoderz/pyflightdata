@@ -19,6 +19,13 @@ The API does not provide any mass request mechanism and does not recommend such 
 
 Eventually we will add more sites and more information to the API.
 
+Licence
+=======
+
+The code for pyflightdata is licenced under MIT licence.
+
+We dont own or store any underlying data, the API simply invokes the providers interfaces and returns the data.
+
 Read the Docs
 =============
 
