@@ -41,6 +41,6 @@ setup(
         'jsonpath-rw',
         'metar'],
     classifiers=[
-        'Programming Language :: Python :: 2.x',
-        'Programming Language :: Python :: 3.x',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
     ])
