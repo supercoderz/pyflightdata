@@ -53,3 +53,6 @@ docs/_build/
 # PyBuilder
 target/
 .pytest_cache/
+
+.vscode
+.ipynb_checkpoints

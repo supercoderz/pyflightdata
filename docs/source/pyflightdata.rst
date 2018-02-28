@@ -1,5 +1,5 @@
-pyflightdata
-============
+pyflightdata API documentation
+==============================
 
 .. automodule:: pyflightdata.flightdata
     :members:

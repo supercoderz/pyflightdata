@@ -3,7 +3,7 @@ Installation
 
 The best way to install pyflightdata is via pip
 
-.. code-block:: bash
+.. code-block :: bash
 
     pip install pyflightdata
 
