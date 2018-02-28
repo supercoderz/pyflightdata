@@ -9,6 +9,9 @@ Eventually this page will be enhanced and serve as the main documentation.
 .. toctree::
    :maxdepth: 2
    :caption: Contents
+   About <about>
+   Installation <installation>
+   Quick start <quickstart>
 
    pyflightdata <pyflightdata>
    Jupyter Notebook Example <http://nbviewer.jupyter.org/github/supercoderz/pyflightdata/blob/master/pyflightdata%20examples.ipynb>
