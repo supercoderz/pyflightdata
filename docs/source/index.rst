@@ -12,8 +12,9 @@ Eventually this page will be enhanced and serve as the main documentation.
 
    About <about>
    Installation <installation>
+   Fair Use <fairusage>
    Quick start <quickstart>
-   Jupyter Notebook Example <http://nbviewer.jupyter.org/github/supercoderz/pyflightdata/blob/master/pyflightdata%20examples.ipynb>
+   More Examples (Jupyter Notebook) <http://nbviewer.jupyter.org/github/supercoderz/pyflightdata/blob/master/pyflightdata%20examples.ipynb>
    API documentation <pyflightdata>
 
 

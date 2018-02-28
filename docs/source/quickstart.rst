@@ -42,3 +42,8 @@ You can also get the information about the aircraft itself like its age etc.
 
     # get the information for a particular aircraft using tail number
     api.get_info_by_tail_number('VT-ANL')
+
+Internally pyflightdata tracks whether you are authenticated or not and the data returned by the above methods will be
+restricted accordingly. Users who are not authenticated will only see data for the free limits, which is usually a week.
+
+Please refer to the examples Jupyter notebook in the next section and the API documentation for details on all the other data that you can get using pyflightdata.
