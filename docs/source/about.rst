@@ -13,4 +13,4 @@ pyflightdata is maintained on a best effort basis where we fix issues as and whe
 There is no fixed schedule to reconcile with the changes that might happen on flightradar24 and keep up with them. We might add
 other data sources in the future but the overall interface will be remain same from the users point of view.
 
-Please feel free to reach out to us by raising issues on out github page.
+Please feel free to reach out to us by raising issues on our github page.
