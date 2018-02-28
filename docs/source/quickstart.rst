@@ -9,6 +9,7 @@ authenticated session to flightradar24 for users who have a paid membership.
 Start by initializing the FlightData class and optionally login to the account.
 
 .. code-block :: python
+    :linenos:
 
     from pyflightdata import FlightData
 
@@ -20,6 +21,7 @@ Once you login, the session token is stored on the FlightData.AUTH_TOKEN variabl
 The most common use case would be to get information about a particular flight where you know the flight number.
 
 .. code-block :: python
+    :linenos:
 
     # get the last 5 flights for AI101
     f.get_history_by_flight_number('AI101')[-5:]
@@ -27,5 +29,16 @@ The most common use case would be to get information about a particular flight w
 Once you have this information, you might want to inspect the flights before and after this route for a particular aircraft.
 
 .. code-block :: python
+    :linenos:
 
+    # get the last 5 flights for the aircraft VT-ANL
+    # this is an Air India aircraft
     api.get_history_by_tail_number('VT-ANL')[-5:]
+
+You can also get the information about the aircraft itself like its age etc.
+
+.. code-block :: python
+    :linenos:
+
+    # get the information for a particular aircraft using tail number
+    api.get_info_by_tail_number('VT-ANL')
