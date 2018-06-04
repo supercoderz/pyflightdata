@@ -24,3 +24,8 @@ Please feel free to raise an issue when you see a data or code issue, we will re
 We don't have any official policy on external contributors yet, but if you feel you can improve some part of the code then please feel free to send a pull request.
 
 We prefer you enrich this API rather than fork it and create your own flavors.
+
+Slack Channel
+=============
+
+Join our [supercoderz.in Slack workspace] (https://join.slack.com/t/supercoderz-in/shared_invite/enQtMzc0NjU5NzM3NTg1LWNjYWNhYTdkYmRmNzMxNzRmYjllYWM2YThhMTYzNzZlZTY1Mjk0ZGViNzk0ODUxMzM0ZTcyMzIwNzUzYWY5NDk)
