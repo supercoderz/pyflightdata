@@ -23,7 +23,7 @@
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
-                          REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
+                          REG_BASE, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
 
 
 class FlightData(FlightMixin):

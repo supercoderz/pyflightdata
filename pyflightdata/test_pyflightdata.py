@@ -27,7 +27,7 @@ from flaky import flaky
 from .flightdata import FlightData
 
 
-def delay_rerun(*args):
+def delay_rerun():
     time.sleep(5)
     return True
 

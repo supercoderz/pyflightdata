@@ -23,7 +23,6 @@
 import json
 import sys
 
-import requests
 from bs4 import BeautifulSoup
 from jsonpath_rw import parse
 from requests import Session

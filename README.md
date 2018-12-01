@@ -11,14 +11,14 @@ A simple library to get flight data from flightradar24 from within Python code.
 Please refer to http://pyflightdata.readthedocs.io/en/latest/ for more details and official documentation.
 
 Licence
-=======
+-------
 
 The code for pyflightdata is licenced under MIT licence.
 
 We dont own or store any underlying data, the API simply invokes the providers interfaces and returns the data.
 
 Reporting issues
-================
+----------------
 
 Please feel free to raise an issue when you see a data or code issue, we will respond as soon as we can.
 We don't have any official policy on external contributors yet, but if you feel you can improve some part of the code then please feel free to send a pull request.
@@ -26,6 +26,14 @@ We don't have any official policy on external contributors yet, but if you feel 
 We prefer you enrich this API rather than fork it and create your own flavors.
 
 Slack Channel
-=============
+-------------
 
 Join our [supercoderz.in Slack workspace](https://join.slack.com/t/supercoderz-in/shared_invite/enQtMzc0NjU5NzM3NTg1LWNjYWNhYTdkYmRmNzMxNzRmYjllYWM2YThhMTYzNzZlZTY1Mjk0ZGViNzk0ODUxMzM0ZTcyMzIwNzUzYWY5NDk)
+
+Tools using pyflightdata
+------------------------
+
+pyflighdtata was started as a small hobby library, but it has found other users who have built interesting apps of their own.
+Here is a list of the apps that we know of, if you have any other apps that you want to be listed here then please get in touch with us.
+
+1. IATA arrivals cli - this is a neat and useful script to get the details of an airport in your command line - https://github.com/E3V3A/iata-arrivals-cli
