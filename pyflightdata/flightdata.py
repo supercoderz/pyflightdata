@@ -20,10 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import datetime
+
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
-                          AIRPORT_DATA_BASE, FLT_BASE, FR24, LOGIN_URL,
-                          REG_BASE, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
+                          AIRPORT_DATA_BASE, AIRPORT_DATA_BASE_EARLIER, FLT_BASE, FR24, LOGIN_URL,
+                          REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
 
 
 class FlightData(FlightMixin):
@@ -401,7 +403,7 @@ class FlightData(FlightMixin):
         url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_reviews(url)
 
-    def get_airport_arrivals(self, iata, page=1, limit=100):
+    def get_airport_arrivals(self, iata, page=1, limit=100, earlier_data=False):
         """Retrieve the arrivals at an airport
 
         Given the IATA code of an airport, this method returns the arrivals information.
@@ -424,10 +426,13 @@ class FlightData(FlightMixin):
             f.get_airport_arrivals('HYD',page=1,limit=10)
 
         """
-        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        if earlier_data:
+            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,int(datetime.date.today().strftime('%s')))
+        else:
+            url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         return self._fr24.get_airport_arrivals(url)
 
-    def get_airport_departures(self, iata, page=1, limit=100):
+    def get_airport_departures(self, iata, page=1, limit=100, earlier_data=False):
         """Retrieve the departures at an airport
 
         Given the IATA code of an airport, this method returns the departures information.
@@ -450,7 +455,11 @@ class FlightData(FlightMixin):
             f.get_airport_departures('HYD',page=1,limit=10)
 
         """
-        url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        if earlier_data:
+            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,int(datetime.date.today().strftime('%s')))
+        else:
+            url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+        
         return self._fr24.get_airport_departures(url)
 
     def get_airport_onground(self, iata, page=1, limit=100):
