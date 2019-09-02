@@ -29,7 +29,7 @@ from .common_fr24 import AIRPORT_BASE, FLT_BASE
 from .flightdata import FlightData
 
 
-def delay_rerun():
+def delay_rerun(*args):
     time.sleep(5)
     return True
 

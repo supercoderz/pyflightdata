@@ -53,4 +53,7 @@ def _process_node(key, vals, node, result):
             if child:
                 result[key] = child
         else:
-            result[key] = str(node[key])
+            if isinstance((node[key]), int) or isinstance((node[key]), float):
+                result[key] = node[key]
+            else:
+                result[key] = str(node[key])

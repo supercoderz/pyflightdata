@@ -28,7 +28,7 @@ from .common_fr24 import *
 from .flightdata import FlightData
 
 
-def delay_rerun():
+def delay_rerun(*args):
     time.sleep(5)
     return True
 
