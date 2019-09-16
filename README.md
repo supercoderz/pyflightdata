@@ -25,11 +25,6 @@ We don't have any official policy on external contributors yet, but if you feel 
 
 We prefer you enrich this API rather than fork it and create your own flavors.
 
-Slack Channel
--------------
-
-Join our [supercoderz.in Slack workspace](https://join.slack.com/t/supercoderz-in/shared_invite/enQtMzc0NjU5NzM3NTg1LWNjYWNhYTdkYmRmNzMxNzRmYjllYWM2YThhMTYzNzZlZTY1Mjk0ZGViNzk0ODUxMzM0ZTcyMzIwNzUzYWY5NDk)
-
 Tools using pyflightdata
 ------------------------
 
