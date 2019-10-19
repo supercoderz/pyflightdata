@@ -22,6 +22,7 @@
 
 import json
 import sys
+import time
 
 from bs4 import BeautifulSoup
 from jsonpath_rw import parse
@@ -85,6 +86,10 @@ class ProcessorMixin(object):
                 'Referer': 'https://www.flightradar24.com'
             }
             result = FlightMixin.session.get(url, headers=headers)
+            if result.status_code != 200:
+                print("HTML code {0} - Retry in 10 seconds...".format(result.status_code))
+                time.sleep(10)
+                result = FlightMixin.session.get(url, headers=headers)
         except:
             return None
         return result.content if result.status_code == 200 else None
