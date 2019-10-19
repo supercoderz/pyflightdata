@@ -158,7 +158,7 @@ class FlightData(FlightMixin):
             f.get_info_by_flight_number('VT-ANL')
             f.get_info_by_flight_number('VT-ANL',page=1,limit=10)
         """
-        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_aircraft_data(url)
 
     def get_airlines(self):
@@ -512,7 +512,7 @@ class FlightData(FlightMixin):
             f.get_images_by_flight_number('VT-ANL')
             f.get_images_by_flight_number('VT-ANL',page=1,limit=10)
         """
-        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit,self._fr24.timestamp)
         return self._fr24.get_aircraft_image_data(url)
 
     def login(self, email, password):
