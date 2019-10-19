@@ -24,7 +24,7 @@ from .common import ProcessorMixin
 from .json_helper import fltr
 
 ROOT = 'http://www.flightradar24.com'
-REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}'
+REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}&timestamp={4}'
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
@@ -40,6 +40,8 @@ LOGIN_URL = 'https://www.flightradar24.com/user/login'
 class FR24(ProcessorMixin):
 
     FILTER_JSON_KEYS = ['hex', 'id', 'logo', 'row', 'icon']
+
+    timestamp = ""
 
     # airport stats
 
@@ -110,6 +112,9 @@ class FR24(ProcessorMixin):
 
     def process_raw_flight_data(self, data, by_tail=False):
         # TODO check later if we need to parse this data - for now return full set
+        l = len(data)
+        self.timestamp = ""
+        if l > 0: self.timestamp = data[l-1]['time']['other']['updated']
         return data
 
     def get_data(self, url, by_tail=False):

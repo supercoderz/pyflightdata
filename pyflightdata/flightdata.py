@@ -104,11 +104,11 @@ class FlightData(FlightMixin):
             f=FlightData()
             #optional login
             f.login(myemail,mypassword)
-            f.get_history_by_flight_number('VT-ANL')
-            f.get_history_by_flight_number('VT-ANL',page=1,limit=10)
+            f.get_history_by_tail_number('VT-ANL')
+            f.get_history_by_tail_number('VT-ANL',page=1,limit=10)
 
         """
-        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit)
+        url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_data(url, True)
 
     def get_countries(self):
