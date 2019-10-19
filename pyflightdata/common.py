@@ -91,17 +91,29 @@ class ProcessorMixin(object):
 
     def get_soup_or_none(self, content):
         try:
-            return BeautifulSoup(content, "lxml", from_encoding='utf-8')
+            return BeautifulSoup(content, "html5lib", from_encoding='utf-8')
         except:
             return None
 
     def traverse(self, soup, key, elements, by_class=False):
-        res = soup.find(attrs={'id': key}) if not by_class else soup.find(
+        results = []
+        # Logic
+        # Get the key element
+        # Loop on each element except the last one
+        # This is to traverse to the last element which is what we need
+        # Once done with the list, if element is not none, get the needed value from there
+        # Handle multiple results in each level
+        res = soup.find_all(attrs={'id': key}) if not by_class else soup.find(
             attrs={'class': key})
         if elements:
             for element in elements[:-1]:
-                res = res.find(element)
-            return res.find_all(elements[-1])
+                next_level = []
+                for r in res:
+                    next_level.extend(r.find_all(element))
+                res = next_level
+            for r in res:
+                results.extend(r.find_all(elements[-1]))
+            return results
         return res
 
     def get_raw_data(self, url, elemid, *elements):

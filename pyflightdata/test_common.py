@@ -63,4 +63,4 @@ class TestCommon(object):
 
     def test_traverse(self):
         assert self.tp.get_raw_data(
-            AIRPORT_BASE, 'tbl-datatable', 'tbody', 'tr').__len__() > 0
+            AIRPORT_BASE.format('India'), 'tbl-datatable', 'tbody', 'tr','td','a').__len__() > 0
