@@ -412,6 +412,7 @@ class FlightData(FlightMixin):
             iata (str): The IATA code for an airport, e.g. HYD
             page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
             limit (int): Optional limit on number of records returned
+            earlier_data (boolean) : Default false, set to true to get data from earlier in time, mimics similar feature on the site
 
         Returns:
             A list of dicts with the data; one dict for each row of data from flightradar24
@@ -441,6 +442,7 @@ class FlightData(FlightMixin):
             iata (str): The IATA code for an airport, e.g. HYD
             page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
             limit (int): Optional limit on number of records returned
+            earlier_data (boolean) : Default false, set to true to get data from earlier in time, mimics similar feature on the site
 
         Returns:
             A list of dicts with the data; one dict for each row of data from flightradar24
