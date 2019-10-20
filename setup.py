@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 Hari Allamraju
+# Copyright (c) 2019 Hari Allamraju
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ from distutils.core import setup
 
 setup(
     name='pyflightdata',
-    version='0.6',
+    version='0.7',
     description='Get flight data from websites by making HTTP calls',
     long_description='Please visit https://github.com/supercoderz/pyflightdata for more details',
     author='Hari Allamraju',
@@ -39,7 +39,8 @@ setup(
         'requests',
         'beautifulsoup4',
         'jsonpath-rw',
-        'metar'],
+        'metar',
+        'html5lib'],
     classifiers=[
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
