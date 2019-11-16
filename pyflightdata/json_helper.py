@@ -24,6 +24,7 @@
 Filter a json dict to remove given keys
 """
 
+import datetime
 
 def fltr(node, vals):
     if isinstance(node, dict):
@@ -54,6 +55,10 @@ def _process_node(key, vals, node, result):
                 result[key] = child
         else:
             if isinstance((node[key]), int) or isinstance((node[key]), float):
-                result[key] = node[key]
+                if key in ['timestamp', 'arrival', 'departure', 'updated', 'eta', 'utc', 'local']:
+                    result[key] = node[key] * 1000
+                    result[key+'_date'] = datetime.date.fromtimestamp(node[key]).strftime('%Y%m%d')
+                else:
+                    result[key] = node[key]
             else:
                 result[key] = str(node[key])

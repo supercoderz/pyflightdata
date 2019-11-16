@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import time
+import datetime
 
 from flaky import flaky
 
@@ -38,6 +39,9 @@ f = FlightData()
 @flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestGetByFlightNumber(object):
 
+    t = datetime.date.today().strftime('%Y%m%d')
+    tpls90 = (datetime.date.today() + datetime.timedelta(days=90)).strftime('%Y%m%d')
+
     def test_simple_get(self):
         f.get_history_by_flight_number('AI101')
 
@@ -45,6 +49,13 @@ class TestGetByFlightNumber(object):
         result = f.get_history_by_flight_number('AI101')
         assert result.__len__() > 0
 
+    def test_check_there_is_history_data(self):
+        result = f.get_flight_for_date('AI101',self.t)
+        assert result.__len__() > 0
+
+    def test_check_there_is_history_data(self):
+        result = f.get_flight_for_date('AI101',self.tpls90)
+        assert result.__len__() == 0
 
 @flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestGetByTailNumber(object):

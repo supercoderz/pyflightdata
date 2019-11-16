@@ -60,7 +60,8 @@ class ProcessorMixin(object):
             return {
                 self._byteify(key, ignore_dicts=False): self._byteify(value, ignore_dicts=False)
                 for key, value in data.items()
-            }
+                }
+
         # if it's anything else, return it in its original form
         return data
 

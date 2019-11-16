@@ -40,7 +40,8 @@ setup(
         'beautifulsoup4',
         'jsonpath-rw',
         'metar',
-        'html5lib'],
+        'html5lib',
+        'objectpath'],
     classifiers=[
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',

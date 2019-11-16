@@ -26,7 +26,7 @@ from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, AIRPORT_DATA_BASE_EARLIER, FLT_BASE, FR24, LOGIN_URL,
                           REG_BASE, ROOT, AIRLINE_FLT_BASE_POINTS, AIRLINE_FLEET_BASE)
-
+from jsonpath_rw import parse
 
 class FlightData(FlightMixin):
     """FlightData class is the entry point to the API. 
@@ -57,6 +57,43 @@ class FlightData(FlightMixin):
             self.login(email, password)
 
     # Flight related information - primarily from flightradar24
+    """Fetch a flight by its number for a given date.
+
+    This method can be used to get a flight route by the number for a date.
+    The date should be in the YYYYMMDD format.
+    It checks the user authentication and returns the data accordingly.
+
+    Args:
+        flight_number (str): The flight number, e.g. AI101
+        date_str (str): The date, e.g. 20191116
+        page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+        limit (int): Optional limit on number of records returned
+
+    Returns:
+        A list of dicts with the data; one dict for each row of data from flightradar24
+
+    Example::
+
+        from pyflightdata import FlightData
+        f=FlightData()
+        #optional login
+        f.login(myemail,mypassword)
+        f.get_history_by_flight_number('AI101','20191116')
+
+    """
+    def get_flight_for_date(self,flight_number,date_str):
+        flights = self.get_history_by_flight_number(flight_number);
+        arrival_filter = parse('time.*.arrival_date')
+        departure_filter = parse('time.*.departure_date')
+        result = []
+        for flight in flights:
+            arrival_dates = [z.value for z in arrival_filter.find(flight)]
+            departure_dates = [z.value for z in departure_filter.find(flight)]
+            if (date_str in arrival_dates) or (date_str in departure_dates):
+                result.append(flight)
+        return result
+
+
     def get_history_by_flight_number(self, flight_number, page=1, limit=100):
         """Fetch the history of a flight by its number.
 
