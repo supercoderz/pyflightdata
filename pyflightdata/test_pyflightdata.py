@@ -42,6 +42,9 @@ class TestGetByFlightNumber(object):
     t = datetime.date.today().strftime('%Y%m%d')
     tpls90 = (datetime.date.today() + datetime.timedelta(days=90)).strftime('%Y%m%d')
 
+    def teardown(self):
+        time.sleep(3)
+
     def test_simple_get(self):
         f.get_history_by_flight_number('AI101')
 
@@ -60,24 +63,30 @@ class TestGetByFlightNumber(object):
 @flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestGetByTailNumber(object):
 
+    def teardown(self):
+        time.sleep(3)
+
     def test_simple_get(self):
-        f.get_history_by_tail_number('VT-ALL')
+        f.get_history_by_tail_number('9V-SGA')
 
     def test_check_there_is_history_data(self):
         result = f.get_history_by_tail_number('9V-SMC')
         assert result.__len__() > 0
 
     def test_aircraft_info(self):
-        result = f.get_info_by_tail_number('VT-ALL')
+        result = f.get_info_by_tail_number('9V-MGA')
         assert result.__len__() > 0
 
     def test_aircraft_images(self):
-        result = f.get_images_by_tail_number('VT-ALL')
+        result = f.get_images_by_tail_number('9V-MGB')
         assert result.__len__() >= 0
 
 
 @flaky(max_runs=5, rerun_filter=delay_rerun)
 class TestOtherFeatures(object):
+
+    def teardown(self):
+        time.sleep(3)
 
     def test_get_countries(self):
         assert f.get_countries().__len__() > 0

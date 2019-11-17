@@ -56,9 +56,9 @@ def _process_node(key, vals, node, result):
         else:
             if isinstance((node[key]), int) or isinstance((node[key]), float):
                 if key in ['timestamp', 'arrival', 'departure', 'updated', 'eta', 'utc', 'local']:
-                    result[key] = node[key] * 1000
+                    result[key+'_millis'] = node[key] * 1000
                     result[key+'_date'] = datetime.date.fromtimestamp(node[key]).strftime('%Y%m%d')
-                else:
-                    result[key] = node[key]
+                    result[key+'_time'] = datetime.datetime.fromtimestamp(node[key]).strftime('%H%M')
+                result[key] = node[key]
             else:
                 result[key] = str(node[key])
