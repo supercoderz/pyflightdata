@@ -26,7 +26,7 @@ from distutils.core import setup
 
 setup(
     name='pyflightdata',
-    version='0.7',
+    version='0.8',
     description='Get flight data from websites by making HTTP calls',
     long_description='Please visit https://github.com/supercoderz/pyflightdata for more details',
     author='Hari Allamraju',
@@ -40,8 +40,7 @@ setup(
         'beautifulsoup4',
         'jsonpath-rw',
         'metar',
-        'html5lib',
-        'objectpath'],
+        'html5lib'],
     classifiers=[
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',

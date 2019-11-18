@@ -14,4 +14,3 @@ sphinx-autobuild
 sphinx_rtd_theme
 metar
 pytest-html
-objectpath
