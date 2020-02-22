@@ -136,6 +136,18 @@ class TestOtherFeatures(object):
     def test_get_airport_departures(self):
         assert f.get_airport_departures('SIN').__len__() >= 0
 
+    def test_get_airport_departures_earlier(self):
+        assert f.get_airport_departures('SIN', earlier_data=True).__len__() >= 0
+
+    def test_get_airport_departures_no_earlier(self):
+        assert f.get_airport_departures('SIN', earlier_data=False).__len__() >= 0
+
+    def test_get_airport_departures_earlier(self):
+        assert f.get_airport_departures('GAU', earlier_data=True).__len__() >= 0
+
+    def test_get_airport_departures_no_earlier(self):
+        assert f.get_airport_departures('GAU', earlier_data=False).__len__() >= 0
+
     def test_get_airport_onground(self):
         assert f.get_airport_onground('SIN').__len__() >= 0
 
