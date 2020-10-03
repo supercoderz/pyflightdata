@@ -8,3 +8,4 @@ pyflightdata/json_helper.py
 pyflightdata/test_common.py
 pyflightdata/test_common_fr24.py
 pyflightdata/test_pyflightdata.py
+pyflightdata/utils.py

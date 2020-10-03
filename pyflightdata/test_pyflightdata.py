@@ -137,7 +137,7 @@ class TestOtherFeatures(object):
         assert f.get_airport_departures('SIN').__len__() >= 0
 
     def test_get_airport_departures_earlier(self):
-        assert f.get_airport_departures('SIN', earlier_data=True).__len__() >= 0
+        assert f.get_airport_departures('PMF', earlier_data=True).__len__() >= 0
 
     def test_get_airport_departures_no_earlier(self):
         assert f.get_airport_departures('SIN', earlier_data=False).__len__() >= 0

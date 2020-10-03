@@ -22,6 +22,7 @@
 
 import datetime
 
+from .utils import *
 from .common import FlightMixin
 from .common_fr24 import (AIRLINE_BASE, AIRLINE_FLT_BASE, AIRPORT_BASE,
                           AIRPORT_DATA_BASE, AIRPORT_DATA_BASE_EARLIER, FLT_BASE, FR24, LOGIN_URL,
@@ -495,10 +496,10 @@ class FlightData(FlightMixin):
 
         """
         if earlier_data:
-            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,int(datetime.date.today().strftime('%s')))
+            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,nowtimestamp())
         else:
             url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
-        
+
         return self._fr24.get_airport_departures(url)
 
     def get_airport_onground(self, iata, page=1, limit=100):

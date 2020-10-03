@@ -20,28 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#!/usr/bin/env python
+"""
+Util functions
+"""
 
-from distutils.core import setup
+from datetime import datetime, timedelta
 
-setup(
-    name='pyflightdata',
-    version='0.8.2',
-    description='Get flight data from websites by making HTTP calls',
-    long_description='Please visit https://github.com/supercoderz/pyflightdata for more details',
-    author='Hari Allamraju',
-    author_email='anarahari@gmail.com',
-    url='https://github.com/supercoderz/pyflightdata',
-    packages=['pyflightdata'],
-    licence='MIT',
-    install_requires=[
-        'lxml',
-        'requests',
-        'beautifulsoup4',
-        'jsonpath-rw',
-        'metar',
-        'html5lib'],
-    classifiers=[
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 3',
-    ])
+def totimestamp(dt, epoch=datetime(1970,1,1)):
+    td = dt - epoch
+    # return td.total_seconds()
+    return (td.microseconds + (td.seconds + td.days * 86400) * 10**6) / 10**6
+
+def nowtimestamp():
+    return totimestamp(datetime.utcnow())
