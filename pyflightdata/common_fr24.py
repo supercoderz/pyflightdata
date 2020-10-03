@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2019 Hari Allamraju
+# Copyright (c) 2020 Hari Allamraju
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ from .json_helper import fltr
 
 ROOT = 'http://www.flightradar24.com'
 REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=reg&page={2}&limit={3}&token={1}&timestamp={4}'
-FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}'
+FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}&timestamp={4}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
 AIRPORT_DATA_BASE_EARLIER = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&plugin[]=&plugin-setting[schedule][mode]={5}&plugin-setting[schedule][timestamp]={4}&page={2}&limit={3}&token={1}'

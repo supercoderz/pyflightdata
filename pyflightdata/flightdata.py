@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2019 Hari Allamraju
+# Copyright (c) 2020 Hari Allamraju
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import datetime
+import time
 
 from .utils import *
 from .common import FlightMixin
@@ -58,31 +58,32 @@ class FlightData(FlightMixin):
             self.login(email, password)
 
     # Flight related information - primarily from flightradar24
-    """Fetch a flight by its number for a given date.
-
-    This method can be used to get a flight route by the number for a date.
-    The date should be in the YYYYMMDD format.
-    It checks the user authentication and returns the data accordingly.
-
-    Args:
-        flight_number (str): The flight number, e.g. AI101
-        date_str (str): The date, e.g. 20191116
-        page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
-        limit (int): Optional limit on number of records returned
-
-    Returns:
-        A list of dicts with the data; one dict for each row of data from flightradar24
-
-    Example::
-
-        from pyflightdata import FlightData
-        f=FlightData()
-        #optional login
-        f.login(myemail,mypassword)
-        f.get_history_by_flight_number('AI101','20191116')
-
-    """
     def get_flight_for_date(self,flight_number,date_str):
+        """Fetch a flight by its number for a given date.
+
+         This method can be used to get a flight route by the number for a date.
+         The date should be in the YYYYMMDD format.
+         It checks the user authentication and returns the data accordingly.
+
+         Args:
+             flight_number (str): The flight number, e.g. AI101
+             date_str (str): The date, e.g. 20191116
+             page (int): Optional page number; for users who are on a plan with flightradar24 they can pass in higher page numbers to get more data
+             limit (int): Optional limit on number of records returned
+
+         Returns:
+             A list of dicts with the data; one dict for each row of data from flightradar24
+
+         Example::
+
+             from pyflightdata import FlightData
+             f=FlightData()
+             #optional login
+             f.login(myemail,mypassword)
+             f.get_history_by_flight_number('AI101','20191116')
+
+         """
+
         flights = self.get_history_by_flight_number(flight_number);
         arrival_filter = parse('time.*.arrival_date')
         departure_filter = parse('time.*.departure_date')
@@ -100,6 +101,9 @@ class FlightData(FlightMixin):
 
         This method can be used to get the history of a flight route by the number.
         It checks the user authentication and returns the data accordingly.
+
+        You need to query page 1 first, and if there are more pages then increment page number until you get 0 results back.
+        Limit has a max value of 100
 
         Args:
             flight_number (str): The flight number, e.g. AI101
@@ -119,14 +123,84 @@ class FlightData(FlightMixin):
             f.get_history_by_flight_number('AI101',page=1,limit=10)
 
         """
-        url = FLT_BASE.format(flight_number, str(self.AUTH_TOKEN), page, limit)
+        url = FLT_BASE.format(flight_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_data(url)
+
+    def get_all_available_history_by_flight_number(self, flight_number):
+        """Fetch all the available history of a particular aircraft by its flight number.
+
+        This method can be used to get all the available history of a particular aircraft by its flight number.
+        It checks the user authentication and returns the data accordingly.
+
+        Args:
+            flight_number (str): The tail number, e.g. VT-ANL
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_all_available_history_by_flight_number('6E375')
+
+        """
+        pg = 1
+        result = []
+        r = self.get_history_by_flight_number(flight_number, page=pg)
+        while len(r) > 0:
+            result = result + r
+            pg = pg + 1
+            print("Looking for more data ...")
+            time.sleep(1)
+            r = self.get_history_by_flight_number(flight_number, page=pg)
+        print("OK, all done!")
+        return result
+
+    def get_all_available_history_by_tail_number(self, tail_number):
+        """Fetch all the available history of a particular aircraft by its tail number.
+
+        This method can be used to get all the available history of a particular aircraft by its tail number.
+        It checks the user authentication and returns the data accordingly.
+
+        Args:
+            tail_number (str): The tail number, e.g. VT-ANL
+
+        Returns:
+            A list of dicts with the data; one dict for each row of data from flightradar24
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            #optional login
+            f.login(myemail,mypassword)
+            f.get_all_available_history_by_tail_number('VT-ANL')
+
+        """
+        pg = 1
+        result = []
+        r = self.get_history_by_tail_number(tail_number, page=pg)
+        while len(r) > 0:
+            print(r)
+            result = result + r
+            pg = pg + 1
+            print("Looking for more data ...")
+            time.sleep(1)
+            r = self.get_history_by_tail_number(tail_number, page=pg)
+        print("OK, all done!")
+        return result
 
     def get_history_by_tail_number(self, tail_number, page=1, limit=100):
         """Fetch the history of a particular aircraft by its tail number.
 
         This method can be used to get the history of a particular aircraft by its tail number.
         It checks the user authentication and returns the data accordingly.
+
+        You need to query page 1 first, and if there are more pages then increment page number until you get 0 results back.
+        Limit has a max value of 100
 
         Args:
             tail_number (str): The tail number, e.g. VT-ANL

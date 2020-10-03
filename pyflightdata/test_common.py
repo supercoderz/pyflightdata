@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2019 Hari Allamraju
+# Copyright (c) 2020 Hari Allamraju
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ from flaky import flaky
 from .common import ProcessorMixin
 from .common_fr24 import AIRPORT_BASE, FLT_BASE
 from .flightdata import FlightData
+from .utils import *
 
 
 def delay_rerun(*args):
@@ -54,7 +55,7 @@ class TestCommon(object):
         assert self.tp.get_soup_or_none(None) is None
 
     def test_get_raw_data_json(self):
-        url = FLT_BASE.format('AI101', FlightData.AUTH_TOKEN, 1, 100)
+        url = FLT_BASE.format('AI101', FlightData.AUTH_TOKEN, 1, 100, nowtimestamp_millis())
         assert self.tp.get_raw_data_json(
             url, 'result.response.data').__len__() > 0
 
