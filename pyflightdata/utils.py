@@ -31,5 +31,5 @@ def totimestamp(dt, epoch=datetime(1970,1,1)):
     # return td.total_seconds()
     return (td.microseconds + (td.seconds + td.days * 86400) * 10**6) / 10**6
 
-def nowtimestamp():
+def nowtimestamp_millis():
     return totimestamp(datetime.utcnow())

@@ -28,7 +28,7 @@ REG_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&f
 FLT_BASE = 'https://api.flightradar24.com/common/v1/flight/list.json?query={0}&fetchBy=flight&page={2}&limit={3}&token={1}'
 AIRPORT_BASE = 'http://www.flightradar24.com/data/airports/{0}'
 AIRPORT_DATA_BASE = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&token={1}'
-AIRPORT_DATA_BASE_EARLIER = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&page={2}&limit={3}&plugin-setting[schedule][timestamp]={4}&token={1}'
+AIRPORT_DATA_BASE_EARLIER = 'https://api.flightradar24.com/common/v1/airport.json?code={0}&plugin[]=&plugin-setting[schedule][mode]={5}&plugin-setting[schedule][timestamp]={4}&page={2}&limit={3}&token={1}'
 AIRLINE_BASE = 'https://www.flightradar24.com/data/airlines/{0}'
 AIRLINE_FLEET_BASE = 'https://www.flightradar24.com/data/airlines/{0}/fleet'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/v1/search/web/find?query={0}&limit={1}&type=schedule'

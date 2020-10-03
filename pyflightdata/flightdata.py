@@ -466,10 +466,14 @@ class FlightData(FlightMixin):
 
         """
         if earlier_data:
-            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,int(datetime.date.today().strftime('%s')))
+            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), -1, limit,nowtimestamp_millis(),'arrivals')
+            early = self._fr24.get_airport_arrivals(url)
+            url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+            current = self._fr24.get_airport_arrivals(url)
+            return early+current
         else:
             url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
-        return self._fr24.get_airport_arrivals(url)
+            return self._fr24.get_airport_arrivals(url)
 
     def get_airport_departures(self, iata, page=1, limit=100, earlier_data=False):
         """Retrieve the departures at an airport
@@ -496,11 +500,14 @@ class FlightData(FlightMixin):
 
         """
         if earlier_data:
-            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), page, limit,nowtimestamp())
+            url = AIRPORT_DATA_BASE_EARLIER.format(iata, str(self.AUTH_TOKEN), -1, limit, nowtimestamp_millis(),'departures')
+            early = self._fr24.get_airport_departures(url)
+            url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
+            current = self._fr24.get_airport_departures(url)
+            return early+current
         else:
             url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
-
-        return self._fr24.get_airport_departures(url)
+            return self._fr24.get_airport_departures(url)
 
     def get_airport_onground(self, iata, page=1, limit=100):
         """Retrieve the aircraft on ground at an airport
