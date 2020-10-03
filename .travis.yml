@@ -1,9 +1,4 @@
 language: python
-python:
-  - "3.8.5"
-os:
-  - linux
-  - osx
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
