@@ -126,7 +126,7 @@ class FlightData(FlightMixin):
         url = FLT_BASE.format(flight_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_data(url)
 
-    def get_all_available_history_by_flight_number(self, flight_number):
+    def get_all_available_history_by_flight_number(self, flight_number, delay=1):
         """Fetch all the available history of a particular aircraft by its flight number.
 
         This method can be used to get all the available history of a particular aircraft by its flight number.
@@ -134,6 +134,7 @@ class FlightData(FlightMixin):
 
         Args:
             flight_number (str): The tail number, e.g. VT-ANL
+            delay (int): Number of seconds delay between each check for new data, defaults to 1 second
 
         Returns:
             A list of dicts with the data; one dict for each row of data from flightradar24
@@ -144,7 +145,7 @@ class FlightData(FlightMixin):
             f=FlightData()
             #optional login
             f.login(myemail,mypassword)
-            f.get_all_available_history_by_flight_number('6E375')
+            f.get_all_available_history_by_flight_number('6E375',delay=2)
 
         """
         pg = 1
@@ -153,13 +154,11 @@ class FlightData(FlightMixin):
         while len(r) > 0:
             result = result + r
             pg = pg + 1
-            print("Looking for more data ...")
-            time.sleep(1)
+            time.sleep(delay)
             r = self.get_history_by_flight_number(flight_number, page=pg)
-        print("OK, all done!")
         return result
 
-    def get_all_available_history_by_tail_number(self, tail_number):
+    def get_all_available_history_by_tail_number(self, tail_number, delay=1):
         """Fetch all the available history of a particular aircraft by its tail number.
 
         This method can be used to get all the available history of a particular aircraft by its tail number.
@@ -167,6 +166,7 @@ class FlightData(FlightMixin):
 
         Args:
             tail_number (str): The tail number, e.g. VT-ANL
+            delay (int): Number of seconds delay between each check for new data, defaults to 1 second
 
         Returns:
             A list of dicts with the data; one dict for each row of data from flightradar24
@@ -178,19 +178,17 @@ class FlightData(FlightMixin):
             #optional login
             f.login(myemail,mypassword)
             f.get_all_available_history_by_tail_number('VT-ANL')
+            f.get_all_available_history_by_tail_number('VT-ANL',delay=2)
 
         """
         pg = 1
         result = []
         r = self.get_history_by_tail_number(tail_number, page=pg)
         while len(r) > 0:
-            print(r)
             result = result + r
             pg = pg + 1
-            print("Looking for more data ...")
-            time.sleep(1)
+            time.sleep(delay)
             r = self.get_history_by_tail_number(tail_number, page=pg)
-        print("OK, all done!")
         return result
 
     def get_history_by_tail_number(self, tail_number, page=1, limit=100):
