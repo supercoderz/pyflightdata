@@ -375,11 +375,15 @@ class FlightData(FlightMixin):
         """
         url = AIRPORT_DATA_BASE.format(iata, str(self.AUTH_TOKEN), page, limit)
         weather = self._fr24.get_airport_weather(url)
-        mi = weather['sky']['visibility']['mi']
-        if (mi is not None) and (mi != "None"):
-            mi = float(mi)
-            km = mi * 1.6094
-            weather['sky']['visibility']['km'] = km
+        try:
+            mi = weather['sky']['visibility']['mi']
+            if (mi is not None) and (mi != "None"):
+                mi = float(mi)
+                km = mi * 1.6094
+                weather['sky']['visibility']['km'] = km
+        except:
+            #return empty weather - if there is no miles info then generally wetaher info is totally missing
+            pass
         return weather
 
     def get_airport_metars(self, iata, page=1, limit=100):
@@ -484,7 +488,11 @@ class FlightData(FlightMixin):
         details = self._fr24.get_airport_details(url)
         weather = self._fr24.get_airport_weather(url)
         # weather has more correct and standard elevation details in feet and meters
-        details['position']['elevation'] = weather['elevation']
+        try:
+            details['position']['elevation'] = weather['elevation']
+        except:
+            # if you cannot get weather then return the elevation you already have
+            pass
         return details
 
     def get_airport_reviews(self, iata, page=1, limit=100):
