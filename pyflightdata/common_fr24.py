@@ -42,6 +42,7 @@ class FR24(ProcessorMixin):
     FILTER_JSON_KEYS = ['hex', 'id', 'logo', 'row', 'icon']
 
     timestamp = ""
+    last_key = ""
 
     # airport stats
 
@@ -277,3 +278,8 @@ class FR24(ProcessorMixin):
         data = self.get_raw_data_json(
             url, json_key)
         return self.filter_and_get_data(data) or []
+
+    def check_last_key(self,key):
+        if self.last_key != key:
+            self.timestamp = ""
+        self.last_key = key

@@ -123,6 +123,7 @@ class FlightData(FlightMixin):
             f.get_history_by_flight_number('AI101',page=1,limit=10)
 
         """
+        self._fr24.check_last_key(flight_number)
         url = FLT_BASE.format(flight_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_data(url)
 
@@ -218,6 +219,7 @@ class FlightData(FlightMixin):
             f.get_history_by_tail_number('VT-ANL',page=1,limit=10)
 
         """
+        self._fr24.check_last_key(tail_number)
         url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_data(url, True)
 
@@ -268,6 +270,7 @@ class FlightData(FlightMixin):
             f.get_info_by_flight_number('VT-ANL')
             f.get_info_by_flight_number('VT-ANL',page=1,limit=10)
         """
+        self._fr24.check_last_key(tail_number)
         url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit, self._fr24.timestamp)
         return self._fr24.get_aircraft_data(url)
 
@@ -637,6 +640,7 @@ class FlightData(FlightMixin):
             f.get_images_by_flight_number('VT-ANL')
             f.get_images_by_flight_number('VT-ANL',page=1,limit=10)
         """
+        self._fr24.check_last_key(tail_number)
         url = REG_BASE.format(tail_number, str(self.AUTH_TOKEN), page, limit,self._fr24.timestamp)
         return self._fr24.get_aircraft_image_data(url)
 
@@ -711,3 +715,7 @@ class FlightData(FlightMixin):
             return "Unable to parse metars. Please install parser from https://github.com/tomp/python-metar."
         m = Metar.Metar(metar)
         return m.string()
+
+    def clear_last_request(self):
+        self._fr24.timestamp=""
+        self._fr24.last_key=""
