@@ -717,5 +717,19 @@ class FlightData(FlightMixin):
         return m.string()
 
     def clear_last_request(self):
+        """
+        The API maintains a simple state that lets you query further into the history of a given flight number or tail number.
+        However this means that when you call multiple flight numbers in a loop, the state needs to be cleared in between.
+        The API attempts to do this on its own, but also provides this method in case a user wants to call it.
+
+        Example::
+
+            from pyflightdata import FlightData
+            f=FlightData()
+            f.get_history_by_flight_number('AI176')
+            f.clear_last_request()
+            f.get_history_by_flight_number('AI101')
+
+        """
         self._fr24.timestamp=""
         self._fr24.last_key=""
