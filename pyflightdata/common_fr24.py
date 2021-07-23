@@ -32,7 +32,7 @@ AIRPORT_DATA_BASE_EARLIER = 'https://api.flightradar24.com/common/v1/airport.jso
 AIRLINE_BASE = 'https://www.flightradar24.com/data/airlines/{0}'
 AIRLINE_FLEET_BASE = 'https://www.flightradar24.com/data/airlines/{0}/fleet'
 AIRLINE_FLT_BASE = 'https://www.flightradar24.com/v1/search/web/find?query={0}&limit={1}&type=schedule'
-AIRLINE_FLT_BASE_POINTS = 'https://api.flightradar24.com/common/v1/search-mobile-pro.json?query=default&origin={0}&destination={1}'
+AIRLINE_FLT_BASE_POINTS = 'https://api.flightradar24.com/common/v1/search.json?query=default&origin={0}&destination={1}'
 IMAGE_BASE = 'https://www.flightradar24.com/aircrafts/images/?aircraft={0}'
 LOGIN_URL = 'https://www.flightradar24.com/user/login'
 
