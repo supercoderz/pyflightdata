@@ -3,7 +3,7 @@ requests
 html5lib
 lxml>=4.4.1
 beautifulsoup4>=4.8.1
-pytest==3.6.0
+pytest==9.0.3
 pytest-cov==2.5.1
 pytest-repeat==0.4.1
 pytest-html==1.22.0
