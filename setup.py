@@ -37,6 +37,7 @@ setup(
     install_requires=[
         'lxml',
         'requests',
+        'curl_cffi',
         'beautifulsoup4',
         'jsonpath-rw',
         'metar',
