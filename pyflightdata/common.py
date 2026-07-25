@@ -26,12 +26,17 @@ import time
 
 from bs4 import BeautifulSoup
 from jsonpath_rw import parse
-from requests import Session
+# flightradar24 is fronted by Cloudflare, which blocks the default TLS/HTTP2
+# fingerprint of the standard ``requests`` library (every call gets a 403
+# "Just a moment..." challenge page). curl_cffi mimics a real Chrome TLS
+# fingerprint so the requests pass through. Its Session API is a drop-in
+# replacement for requests.Session.
+from curl_cffi.requests import Session
 
 
 class FlightMixin(object):
 
-    session = Session()
+    session = Session(impersonate="chrome")
     AUTH_TOKEN = ''
 
 
@@ -67,8 +72,9 @@ class ProcessorMixin(object):
 
     def put_to_page(self, url, params):
         try:
+            # Let curl_cffi set browser-consistent headers (incl. User-Agent)
+            # so they match the impersonated Chrome TLS fingerprint.
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
                 'Method': 'POST',
                 'Origin': 'https://www.flightradar24.com',
                 'Referer': 'https://www.flightradar24.com'
@@ -82,7 +88,6 @@ class ProcessorMixin(object):
     def get_page_or_none(self, url):
         try:
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0',
                 'Origin': 'https://www.flightradar24.com',
                 'Referer': 'https://www.flightradar24.com'
             }
