@@ -1,6 +1,23 @@
 pyflightdata
 ============
 
+<table>
+  <tr>
+    <td bgcolor="#ffdddd">
+      <h2>DEPRECATED: This project has moved</h2>
+      <p>
+        This repository is no longer maintained here. The project has been handed over to
+        <a href="https://github.com/dmoraine/pyflightdata">https://github.com/dmoraine/pyflightdata</a>.
+      </p>
+      <p>
+        Please use the successor PyPI package:
+        <strong><a href="https://pypi.org/project/pyflightdata2/">pyflightdata2</a></strong>
+      </p>
+      <pre><code>pip install pyflightdata2</code></pre>
+    </td>
+  </tr>
+</table>
+
 [![Travis](https://img.shields.io/travis/supercoderz/pyflightdata.svg?maxAge=2592000)](https://travis-ci.org/supercoderz/pyflightdata)
 [![PyPI](https://img.shields.io/pypi/dw/pyflightdata.svg?maxAge=2592000)](https://pypi.python.org/pypi/pyflightdata)
 [![PyPI](https://img.shields.io/pypi/v/pyflightdata.svg?maxAge=2592000)](https://pypi.python.org/pypi/pyflightdata)
